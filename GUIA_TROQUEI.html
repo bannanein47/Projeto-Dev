@@ -1,0 +1,2267 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Plano visual de estudo e desenvolvimento do projeto acadêmico Troquei.">
+  <meta name="theme-color" content="#07111f">
+  <title>Troquei — Plano visual do projeto</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307111f'/%3E%3Cpath d='M15 22h29l-7-7M49 42H20l7 7' fill='none' stroke='%235ee0a0' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: dark;
+      --fundo: #07111f;
+      --fundo-2: #0a1626;
+      --painel: #101f33;
+      --painel-2: #142740;
+      --texto: #f4f8ff;
+      --texto-fraco: #a8b7ca;
+      --linha: #263c56;
+      --verde: #5ee0a0;
+      --verde-escuro: #183f35;
+      --azul: #62b8ff;
+      --azul-escuro: #173953;
+      --amarelo: #ffd66b;
+      --vermelho: #ff7f8d;
+      --roxo: #b9a2ff;
+      --sombra: 0 16px 40px rgb(0 0 0 / 22%);
+      --raio: 18px;
+      --largura: 1220px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(circle at 10% 0%, rgb(98 184 255 / 10%), transparent 26rem),
+        radial-gradient(circle at 90% 8%, rgb(94 224 160 / 9%), transparent 28rem),
+        var(--fundo);
+      color: var(--texto);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    button, input, select { font: inherit; }
+    button, select, a { -webkit-tap-highlight-color: transparent; }
+    a { color: var(--azul); }
+    a:hover { color: #9bd4ff; }
+    code {
+      padding: .12rem .4rem;
+      border: 1px solid var(--linha);
+      border-radius: 7px;
+      background: #081524;
+      color: #cfe9ff;
+      font-size: .9em;
+    }
+    ::selection { background: var(--verde); color: #052016; }
+
+    .topo-mobile {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .8rem 1rem;
+      border-bottom: 1px solid var(--linha);
+      background: rgb(7 17 31 / 92%);
+      backdrop-filter: blur(16px);
+    }
+
+    .marca {
+      display: inline-flex;
+      align-items: center;
+      gap: .7rem;
+      color: var(--texto);
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .marca-sinal {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 13px;
+      background: var(--verde);
+      color: #062117;
+      font-size: 1.4rem;
+      box-shadow: 0 8px 24px rgb(94 224 160 / 22%);
+    }
+
+    .grade-app {
+      display: grid;
+      grid-template-columns: 270px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 1.4rem 1rem;
+      border-right: 1px solid var(--linha);
+      background: rgb(7 17 31 / 82%);
+      backdrop-filter: blur(20px);
+      overflow-y: auto;
+    }
+
+    aside .marca { margin: 0 .55rem 1.4rem; font-size: 1.2rem; }
+    .etiqueta {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .28rem .65rem;
+      border: 1px solid var(--linha);
+      border-radius: 999px;
+      color: var(--texto-fraco);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .etiqueta.verde { border-color: rgb(94 224 160 / 35%); background: rgb(94 224 160 / 10%); color: var(--verde); }
+    .etiqueta.amarela { border-color: rgb(255 214 107 / 35%); background: rgb(255 214 107 / 10%); color: var(--amarelo); }
+    .ponto { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+    nav { display: grid; gap: .25rem; }
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      min-height: 44px;
+      padding: .65rem .75rem;
+      border-radius: 11px;
+      color: var(--texto-fraco);
+      text-decoration: none;
+      font-size: .92rem;
+      font-weight: 650;
+    }
+    nav a:hover, nav a.ativo { background: var(--painel); color: var(--texto); }
+    nav .numero {
+      display: grid;
+      width: 25px;
+      height: 25px;
+      flex: 0 0 25px;
+      place-items: center;
+      border-radius: 8px;
+      background: #0a1727;
+      color: var(--verde);
+      font-size: .75rem;
+    }
+
+    .lateral-rodape {
+      margin: 1.4rem .55rem 0;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--linha);
+      color: var(--texto-fraco);
+      font-size: .82rem;
+    }
+
+    main {
+      width: 100%;
+      max-width: calc(var(--largura) + 4rem);
+      margin: 0 auto;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    .barra-controles {
+      display: grid;
+      grid-template-columns: minmax(240px, 1fr) minmax(190px, 260px);
+      gap: .8rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .campo {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      min-height: 48px;
+      padding: 0 .85rem;
+      border: 1px solid var(--linha);
+      border-radius: 13px;
+      background: rgb(16 31 51 / 88%);
+    }
+    .campo:focus-within { border-color: var(--azul); box-shadow: 0 0 0 3px rgb(98 184 255 / 14%); }
+    .campo input, .campo select {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--texto);
+    }
+    .campo select option { background: var(--painel); color: var(--texto); }
+
+    .cabecalho-pagina {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
+      gap: 1rem;
+      align-items: stretch;
+      margin-bottom: 1.3rem;
+    }
+    .abertura, .marco-principal {
+      padding: clamp(1.25rem, 3vw, 2.2rem);
+      border: 1px solid var(--linha);
+      border-radius: var(--raio);
+      background: linear-gradient(145deg, rgb(20 39 64 / 92%), rgb(10 22 38 / 94%));
+      box-shadow: var(--sombra);
+    }
+    .abertura h1 {
+      max-width: 12ch;
+      margin: .8rem 0 .7rem;
+      font-size: clamp(2.35rem, 5vw, 4.7rem);
+      line-height: .94;
+      letter-spacing: -.06em;
+    }
+    .abertura p { max-width: 62ch; margin: 0; color: var(--texto-fraco); font-size: 1.05rem; }
+    .abertura strong { color: var(--texto); }
+
+    .marco-principal { display: grid; align-content: space-between; }
+    .marco-principal .data { color: var(--amarelo); font-size: clamp(2rem, 4vw, 3.3rem); font-weight: 850; line-height: 1; }
+    .marco-principal h2 { margin: .6rem 0 .2rem; font-size: 1.25rem; }
+    .marco-principal p { margin: 0; color: var(--texto-fraco); }
+
+    .resumos {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: .75rem;
+      margin-bottom: 2rem;
+    }
+    .resumo {
+      padding: 1rem;
+      border: 1px solid var(--linha);
+      border-radius: 15px;
+      background: var(--painel);
+    }
+    .resumo b { display: block; margin-top: .2rem; font-size: 1.55rem; line-height: 1.2; }
+    .resumo span { color: var(--texto-fraco); font-size: .82rem; }
+
+    section {
+      position: relative;
+      margin: 0 0 3.2rem;
+      scroll-margin-top: 1rem;
+    }
+    .secao-titulo {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .secao-titulo h2 { margin: 0; font-size: clamp(1.55rem, 3vw, 2.15rem); letter-spacing: -.035em; }
+    .secao-titulo p { max-width: 66ch; margin: .35rem 0 0; color: var(--texto-fraco); }
+
+    .grade-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .grade-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+    .grade-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .85rem; }
+
+    .cartao {
+      padding: 1.15rem;
+      border: 1px solid var(--linha);
+      border-radius: var(--raio);
+      background: var(--painel);
+    }
+    .cartao h3 { margin: 0 0 .45rem; font-size: 1.06rem; }
+    .cartao p { margin: 0; color: var(--texto-fraco); }
+    .cartao ul { margin: .65rem 0 0; padding-left: 1.2rem; }
+    .cartao li + li { margin-top: .35rem; }
+    .cartao.destaque { border-color: rgb(94 224 160 / 35%); background: linear-gradient(145deg, var(--verde-escuro), var(--painel)); }
+
+    .mapa-central {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .75rem;
+      align-items: stretch;
+    }
+    .mapa-no {
+      display: grid;
+      min-height: 102px;
+      place-content: center;
+      padding: .85rem;
+      border: 1px solid var(--linha);
+      border-radius: 15px;
+      background: var(--painel);
+      text-align: center;
+    }
+    .mapa-no strong { display: block; }
+    .mapa-no small { color: var(--texto-fraco); }
+    .mapa-no.centro {
+      border-color: var(--verde);
+      background: var(--verde);
+      color: #062117;
+      box-shadow: 0 16px 34px rgb(94 224 160 / 18%);
+    }
+    .mapa-no.centro small { color: #174f3c; }
+
+    .mapas-painel {
+      overflow: hidden;
+      border: 1px solid var(--linha);
+      border-radius: var(--raio);
+      background:
+        linear-gradient(rgb(98 184 255 / 5%) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(98 184 255 / 5%) 1px, transparent 1px),
+        #081422;
+      background-size: 28px 28px;
+      box-shadow: var(--sombra);
+    }
+    .mapas-barra {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      padding: .75rem;
+      border-bottom: 1px solid var(--linha);
+      background: rgb(10 22 38 / 92%);
+    }
+    .mapas-abas, .mapa-controles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+    }
+    .mapa-aba, .mapa-controle {
+      min-height: 38px;
+      padding: .45rem .7rem;
+      border: 1px solid var(--linha);
+      border-radius: 9px;
+      background: var(--painel);
+      color: var(--texto-fraco);
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .mapa-aba:hover, .mapa-controle:hover { border-color: var(--azul); color: var(--texto); }
+    .mapa-aba.ativa { border-color: var(--verde); background: var(--verde); color: #062117; }
+    .mapa-controle { min-width: 38px; padding-inline: .6rem; color: var(--texto); }
+    .mapa-viewport {
+      position: relative;
+      height: min(64vh, 640px);
+      min-height: 480px;
+      overflow: hidden;
+      touch-action: none;
+      cursor: grab;
+    }
+    .mapa-viewport.arrastando { cursor: grabbing; }
+    .mapa-svg { display: block; width: 100%; height: 100%; user-select: none; }
+    .mente-ligacao {
+      fill: none;
+      stroke: #375673;
+      stroke-width: 3;
+      marker-end: url(#seta-mapa);
+      opacity: .95;
+      pointer-events: none;
+      vector-effect: non-scaling-stroke;
+    }
+    .mente-ligacao.secundaria {
+      stroke: #5b7086;
+      stroke-width: 2;
+      stroke-dasharray: 7 7;
+      opacity: 0;
+      transition: opacity .2s ease;
+    }
+    #mapa-conteudo.mostrar-relacoes .mente-ligacao.secundaria { opacity: .82; }
+    .mente-no {
+      position: relative;
+      display: grid;
+      width: 100%;
+      height: 100%;
+      place-content: center;
+      padding: 12px 15px;
+      border: 2px solid #2c4865;
+      border-radius: 15px;
+      background: #102138;
+      color: #f4f8ff;
+      font: 700 18px/1.2 Inter, ui-sans-serif, system-ui, sans-serif;
+      text-align: center;
+      box-shadow: 0 12px 24px rgb(0 0 0 / 25%);
+    }
+    .mente-no small {
+      display: block;
+      margin-top: 5px;
+      color: #a8b7ca;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .mente-no.raiz {
+      border-color: #5ee0a0;
+      background: #5ee0a0;
+      color: #062117;
+      font-size: 24px;
+    }
+    .mente-no.raiz small { color: #174f3c; }
+    .mente-etapa {
+      position: absolute;
+      top: 7px;
+      left: 8px;
+      display: grid;
+      width: 25px;
+      height: 25px;
+      place-items: center;
+      border-radius: 50%;
+      background: #f4f8ff;
+      color: #07111f;
+      font-size: 12px;
+      font-weight: 900;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 30%);
+    }
+    .mente-no.azul { border-color: #62b8ff; background: #173953; }
+    .mente-no.roxo { border-color: #b9a2ff; background: #302755; }
+    .mente-no.amarelo { border-color: #ffd66b; background: #4a3b18; }
+    .mente-no.verde { border-color: #5ee0a0; background: #183f35; }
+    .mente-no.vermelho { border-color: #ff7f8d; background: #4a2430; }
+    .mapa-legenda {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .65rem .85rem;
+      border-top: 1px solid var(--linha);
+      background: rgb(10 22 38 / 92%);
+      color: var(--texto-fraco);
+      font-size: .82rem;
+    }
+    .mapa-legenda span:last-child { text-align: right; }
+
+    .guia-introducao {
+      margin-bottom: 1rem;
+      border-color: rgb(94 224 160 / 42%);
+      background: linear-gradient(145deg, rgb(94 224 160 / 12%), var(--painel));
+    }
+    .guias-grade { display: grid; gap: .7rem; }
+    .guia-resumo {
+      display: grid;
+      grid-template-columns: minmax(180px, .7fr) minmax(0, 1.3fr);
+      gap: 1rem;
+      align-items: start;
+    }
+    .guia-roteiro {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: passo-guia;
+    }
+    .guia-roteiro li {
+      position: relative;
+      min-height: 42px;
+      padding: .45rem 0 .7rem 2.9rem;
+      counter-increment: passo-guia;
+    }
+    .guia-roteiro li::before {
+      content: counter(passo-guia);
+      position: absolute;
+      top: .35rem;
+      left: 0;
+      display: grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      border-radius: 9px;
+      background: var(--verde);
+      color: #062117;
+      font-weight: 900;
+    }
+    .guia-roteiro li:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 2.25rem;
+      bottom: -.1rem;
+      left: 14px;
+      width: 2px;
+      background: var(--linha);
+    }
+    .guia-meta {
+      display: grid;
+      gap: .55rem;
+      padding: .85rem;
+      border: 1px solid var(--linha);
+      border-radius: 13px;
+      background: #0a1727;
+    }
+    .guia-meta p { margin: 0; }
+    .guia-meta strong { color: var(--verde); }
+    .guia-links { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .75rem; }
+    .guia-links a {
+      padding: .38rem .62rem;
+      border: 1px solid var(--linha);
+      border-radius: 9px;
+      text-decoration: none;
+      font-size: .84rem;
+    }
+
+    .fluxo {
+      display: flex;
+      gap: .45rem;
+      align-items: stretch;
+      overflow-x: auto;
+      padding: .2rem 0 .7rem;
+      scrollbar-color: var(--linha) transparent;
+    }
+    .passo {
+      position: relative;
+      min-width: 154px;
+      padding: 1rem;
+      border: 1px solid var(--linha);
+      border-radius: 14px;
+      background: var(--painel);
+    }
+    .passo:not(:last-child)::after {
+      content: "›";
+      position: absolute;
+      right: -.38rem;
+      top: 50%;
+      z-index: 2;
+      color: var(--verde);
+      font-size: 1.4rem;
+      transform: translate(50%, -50%);
+    }
+    .passo-numero { color: var(--verde); font-size: .78rem; font-weight: 800; text-transform: uppercase; }
+    .passo b { display: block; margin-top: .2rem; }
+    .passo small { display: block; margin-top: .25rem; color: var(--texto-fraco); }
+
+    .tabela-wrap { overflow-x: auto; border: 1px solid var(--linha); border-radius: var(--raio); }
+    table { width: 100%; border-collapse: collapse; background: var(--painel); }
+    th, td { padding: .85rem 1rem; border-bottom: 1px solid var(--linha); text-align: left; vertical-align: top; }
+    th { color: var(--verde); font-size: .78rem; letter-spacing: .045em; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+    td { color: var(--texto-fraco); }
+    td strong { color: var(--texto); }
+
+    .entidades { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
+    .entidade {
+      overflow: hidden;
+      border: 1px solid var(--linha);
+      border-radius: 15px;
+      background: var(--painel);
+    }
+    .entidade h3 { margin: 0; padding: .8rem 1rem; background: var(--painel-2); font-size: 1rem; }
+    .entidade ul { list-style: none; margin: 0; padding: .65rem 1rem .9rem; }
+    .entidade li { display: flex; justify-content: space-between; gap: .6rem; padding: .24rem 0; color: var(--texto-fraco); font-size: .86rem; }
+    .entidade em { color: var(--azul); font-style: normal; font-size: .75rem; }
+    .relacoes { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; }
+    .relacao { padding: .45rem .7rem; border: 1px solid var(--linha); border-radius: 999px; color: var(--texto-fraco); font-size: .82rem; }
+
+    details {
+      border: 1px solid var(--linha);
+      border-radius: 15px;
+      background: var(--painel);
+    }
+    details + details { margin-top: .65rem; }
+    summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 54px;
+      padding: .8rem 1rem;
+      cursor: pointer;
+      font-weight: 750;
+      list-style: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--verde); font-size: 1.35rem; }
+    details[open] summary::after { content: "−"; }
+    .detalhe-conteudo { padding: 0 1rem 1rem; color: var(--texto-fraco); }
+    .detalhe-conteudo h4 { margin: 1rem 0 .35rem; color: var(--texto); }
+    .detalhe-conteudo ul { margin: .3rem 0; padding-left: 1.15rem; }
+
+    .linha-tempo { position: relative; display: grid; gap: .8rem; margin-left: .7rem; }
+    .linha-tempo::before { content: ""; position: absolute; left: 17px; top: 14px; bottom: 14px; width: 2px; background: var(--linha); }
+    .semana {
+      position: relative;
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      gap: .9rem;
+    }
+    .semana-marcador {
+      z-index: 1;
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border: 2px solid var(--linha);
+      border-radius: 50%;
+      background: var(--fundo);
+      color: var(--texto-fraco);
+      font-size: .78rem;
+      font-weight: 800;
+    }
+    .semana.avaliacao .semana-marcador { border-color: var(--amarelo); color: var(--amarelo); }
+    .semana-conteudo { padding: .95rem 1rem; border: 1px solid var(--linha); border-radius: 15px; background: var(--painel); }
+    .semana-topo { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .semana-topo h3 { margin: 0; font-size: 1rem; }
+    .semana-data { color: var(--amarelo); font-size: .8rem; font-weight: 750; }
+    .semana-conteudo p { margin: .35rem 0 0; color: var(--texto-fraco); }
+    .semana-meta { margin-top: .65rem; color: var(--verde); font-size: .88rem; }
+
+    .metodo {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: .55rem;
+    }
+    .metodo .passo { min-width: 0; }
+    .metodo .passo:not(:last-child)::after { right: -.3rem; }
+
+    .progresso-geral {
+      display: grid;
+      gap: .45rem;
+      margin: 1rem 0;
+    }
+    .progresso-cabecalho { display: flex; justify-content: space-between; gap: 1rem; color: var(--texto-fraco); font-size: .85rem; }
+    .trilho { height: 10px; overflow: hidden; border-radius: 999px; background: #06101c; }
+    .barra { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--verde), var(--azul)); transition: width .25s ease; }
+
+    .lista-marcavel { display: grid; gap: .5rem; }
+    .item-marcavel {
+      display: grid;
+      grid-template-columns: 22px minmax(0, 1fr);
+      gap: .65rem;
+      align-items: start;
+      padding: .68rem .75rem;
+      border: 1px solid var(--linha);
+      border-radius: 11px;
+      background: #0b192a;
+      color: var(--texto-fraco);
+    }
+    .item-marcavel input { width: 18px; height: 18px; margin-top: .2rem; accent-color: var(--verde); }
+    .item-marcavel:has(input:checked) { border-color: rgb(94 224 160 / 35%); color: #78988d; text-decoration: line-through; }
+
+    .filtros-pessoas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      margin-bottom: 1rem;
+    }
+    .botao {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: .58rem .9rem;
+      border: 1px solid var(--linha);
+      border-radius: 11px;
+      background: var(--painel);
+      color: var(--texto);
+      cursor: pointer;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .botao:hover { border-color: var(--azul); }
+    .botao.ativo, .botao.primario { border-color: var(--verde); background: var(--verde); color: #062117; }
+    .botao:focus-visible, summary:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; }
+
+    .pessoa {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 1rem;
+      padding: 1.2rem;
+      border: 1px solid var(--linha);
+      border-radius: var(--raio);
+      background: var(--painel);
+    }
+    .pessoa + .pessoa { margin-top: .8rem; }
+    .pessoa-identidade { padding-right: 1rem; border-right: 1px solid var(--linha); }
+    .avatar {
+      display: grid;
+      width: 54px;
+      height: 54px;
+      margin-bottom: .75rem;
+      place-items: center;
+      border-radius: 16px;
+      background: var(--azul-escuro);
+      color: var(--azul);
+      font-weight: 850;
+    }
+    .pessoa h3 { margin: 0; line-height: 1.25; }
+    .pessoa-cargo { margin-top: .35rem; color: var(--texto-fraco); font-size: .86rem; }
+    .pessoa-conteudo { display: grid; gap: .9rem; }
+    .trilha-pessoa { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
+    .trilha-pessoa div { padding: .65rem; border-left: 3px solid var(--verde); background: #0b192a; color: var(--texto-fraco); font-size: .84rem; }
+    .pessoa-blocos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
+    .pessoa-blocos h4 { margin: 0 0 .3rem; font-size: .88rem; }
+    .pessoa-blocos ul { margin: 0; padding-left: 1.1rem; color: var(--texto-fraco); font-size: .88rem; }
+    .fontes { display: flex; flex-wrap: wrap; gap: .45rem; }
+    .fontes a { padding: .35rem .58rem; border: 1px solid var(--linha); border-radius: 9px; text-decoration: none; font-size: .8rem; }
+
+    .regra-combinacao {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: .7rem;
+      align-items: center;
+    }
+    .regra-bloco { min-height: 118px; padding: 1rem; border: 1px solid var(--linha); border-radius: 15px; background: var(--painel); }
+    .regra-bloco strong { display: block; margin-bottom: .3rem; }
+    .seta { color: var(--verde); font-size: 1.5rem; }
+
+    .aviso {
+      padding: 1rem;
+      border-left: 4px solid var(--amarelo);
+      border-radius: 0 13px 13px 0;
+      background: rgb(255 214 107 / 9%);
+      color: #f5e7bc;
+    }
+
+    .oculto { display: none !important; }
+    .sem-resultado {
+      display: none;
+      padding: 1.2rem;
+      border: 1px dashed var(--linha);
+      border-radius: 15px;
+      color: var(--texto-fraco);
+      text-align: center;
+    }
+
+    footer { padding: 1.5rem 0 2rem; border-top: 1px solid var(--linha); color: var(--texto-fraco); font-size: .85rem; }
+
+    @media (max-width: 1040px) {
+      .resumos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .entidades { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metodo { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .metodo .passo::after { display: none; }
+    }
+
+    @media (max-width: 820px) {
+      .topo-mobile { display: flex; }
+      .grade-app { display: block; }
+      aside { display: none; }
+      main { padding: 1rem; }
+      .cabecalho-pagina, .grade-2, .grade-3 { grid-template-columns: 1fr; }
+      .mapa-central { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .mapa-no.centro { grid-column: 1 / -1; order: -1; }
+      .pessoa { grid-template-columns: 1fr; }
+      .pessoa-identidade { padding-right: 0; padding-bottom: .8rem; border-right: 0; border-bottom: 1px solid var(--linha); }
+      .regra-combinacao { grid-template-columns: 1fr; }
+      .seta { transform: rotate(90deg); text-align: center; }
+      .mapas-barra { align-items: flex-start; flex-direction: column; }
+      .mapa-viewport { min-height: 520px; height: 62vh; }
+    }
+
+    @media (max-width: 600px) {
+      .barra-controles { grid-template-columns: 1fr; }
+      .abertura h1 { font-size: 2.7rem; }
+      .resumos, .mapa-central, .entidades, .metodo, .pessoa-blocos, .trilha-pessoa { grid-template-columns: 1fr; }
+      .secao-titulo { align-items: flex-start; flex-direction: column; }
+      .semana { grid-template-columns: 31px minmax(0, 1fr); gap: .65rem; }
+      .semana-marcador { width: 31px; height: 31px; }
+      .linha-tempo::before { left: 14px; }
+      .guia-resumo { grid-template-columns: 1fr; }
+      .mapa-legenda { flex-direction: column; gap: .25rem; }
+      .mapa-legenda span:last-child { text-align: left; }
+    }
+
+    @media print {
+      body { background: #fff; color: #111; }
+      aside, .topo-mobile, .barra-controles, .filtros-pessoas, .botao { display: none !important; }
+      .grade-app { display: block; }
+      main { max-width: none; padding: 0; }
+      .cartao, .abertura, .marco-principal, .resumo, .mapa-no, details, .semana-conteudo, .pessoa, table, .entidade, .passo, .regra-bloco {
+        break-inside: avoid;
+        border-color: #bbb;
+        background: #fff;
+        color: #111;
+        box-shadow: none;
+      }
+      p, td, .detalhe-conteudo, .pessoa-cargo, .pessoa-blocos ul { color: #333 !important; }
+      section { break-before: page; }
+      section:first-of-type { break-before: auto; }
+    }
+    /* Ajustes restritos aos mapas mentais e à descrição geral. */
+    #mapas .mapas-barra { align-items: flex-start; flex-wrap: wrap; }
+    #mapas .mapa-viewport { height: auto; min-height: 0; aspect-ratio: 1400 / 1080; }
+    #mapas .mapa-svg { font-family: ui-sans-serif, system-ui, sans-serif; }
+    #mapas .mapa-aba { font-size: .9rem; }
+    #mapas .mapa-legenda { flex-direction: column; gap: .2rem; font-size: .9rem; }
+    #mapas .mapa-legenda span:last-child { text-align: left; }
+    #mapas .mapa-legenda span:first-child { color: var(--verde); font-weight: 700; }
+    #visao .visao-descricao { max-width: 78ch; border-left: 3px solid var(--verde); padding-left: 1.4rem; }
+    #visao .visao-descricao p { color: var(--texto-fraco); margin: 0 0 1rem; font-size: 1.05rem; }
+    #visao .visao-descricao strong { color: var(--texto); }
+    @media (max-width: 600px) {
+      #mapas .mapa-viewport { min-height: 440px; }
+      #mapas .mapa-controles { width: 100%; }
+      #visao .visao-descricao { padding-left: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topo-mobile">
+    <a class="marca" href="#inicio"><span class="marca-sinal">⇄</span> Troquei</a>
+    <details>
+      <summary aria-label="Abrir menu">Menu</summary>
+      <div class="detalhe-conteudo">
+        <nav aria-label="Navegação móvel">
+          <a href="#mapas">Mapas mentais</a>
+          <a href="#visao">Visão geral</a>
+          <a href="#banco">Banco</a>
+          <a href="#usuarios">Usuários</a>
+          <a href="#cronograma">Cronograma</a>
+          <a href="#estudos">Estudos</a>
+          <a href="#guias">Guias em português</a>
+          <a href="#equipe">Equipe</a>
+          <a href="#entrega">Entrega</a>
+        </nav>
+      </div>
+    </details>
+  </header>
+
+  <div class="grade-app" id="inicio">
+    <aside>
+      <a class="marca" href="#inicio"><span class="marca-sinal">⇄</span> Troquei</a>
+      <div class="etiqueta verde"><span class="ponto"></span> Plano acadêmico</div>
+      <nav aria-label="Seções do plano" style="margin-top:1rem">
+        <a href="#mapas"><span class="numero">◎</span> Mapas mentais</a>
+        <a href="#visao"><span class="numero">01</span> Visão geral</a>
+        <a href="#produto"><span class="numero">02</span> Produto e fluxo</a>
+        <a href="#tecnologia"><span class="numero">03</span> Tecnologia</a>
+        <a href="#banco"><span class="numero">04</span> Banco de dados</a>
+        <a href="#usuarios"><span class="numero">05</span> Primeiro cartão</a>
+        <a href="#cronograma"><span class="numero">06</span> Cronograma</a>
+        <a href="#estudos"><span class="numero">07</span> Como estudar</a>
+        <a href="#guias"><span class="numero">↳</span> Guias em português</a>
+        <a href="#equipe"><span class="numero">08</span> Equipe</a>
+        <a href="#combinacao"><span class="numero">09</span> Combinação</a>
+        <a href="#organizacao"><span class="numero">10</span> Organização</a>
+        <a href="#entrega"><span class="numero">11</span> Entrega final</a>
+      </nav>
+      <div class="lateral-rodape">
+        <strong>Primeira avaliação</strong><br>
+        7 de outubro de 2026<br><br>
+        <strong>Entrega final</strong><br>
+        Última semana de novembro
+      </div>
+    </aside>
+
+    <main>
+      <div class="barra-controles" aria-label="Controles do plano">
+        <label class="campo">
+          <span aria-hidden="true">⌕</span>
+          <input id="busca" type="search" placeholder="Buscar assunto, tecnologia ou integrante…" aria-label="Buscar no plano">
+        </label>
+        <label class="campo">
+          <span aria-hidden="true">◎</span>
+          <select id="atalho-pessoa" aria-label="Ir para integrante">
+            <option value="">Ver todos os integrantes</option>
+            <option value="matheus">Matheus — planejamento</option>
+            <option value="joao">João — banco</option>
+            <option value="fernando">Fernando — servidor</option>
+            <option value="arthur">Arthur — interface</option>
+            <option value="pedro">Pedro — segurança</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="sem-resultado" id="sem-resultado">Nenhuma parte do plano corresponde à busca.</div>
+
+      <header class="cabecalho-pagina bloco-pesquisa" data-termos="troquei plano projeto avaliação outubro novembro">
+        <div class="abertura">
+          <span class="etiqueta verde">Projeto acadêmico · IFPE</span>
+          <h1>Do estudo à troca funcionando.</h1>
+          <p>Um plano visual para o grupo aprender o necessário, construir por partes e chegar às avaliações com um <strong>fluxo completo que todos conseguem explicar</strong>.</p>
+        </div>
+        <div class="marco-principal">
+          <div>
+            <span class="etiqueta amarela">Próximo marco</span>
+            <div class="data">07 OUT</div>
+            <h2>Primeira apresentação</h2>
+            <p>Cadastro, entrada, categorias e gerenciamento de itens funcionando localmente.</p>
+          </div>
+          <div class="progresso-geral">
+            <div class="progresso-cabecalho"><span>Progresso dos estudos marcados</span><strong id="progresso-texto">0%</strong></div>
+            <div class="trilho" role="progressbar" aria-label="Progresso dos estudos" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="barra" id="barra-progresso"></div></div>
+          </div>
+        </div>
+      </header>
+
+      <div class="resumos bloco-pesquisa" data-termos="resumo equipe semanas diagramas tecnologia">
+        <div class="resumo"><span>Integrantes</span><b>5</b></div>
+        <div class="resumo"><span>Etapas semanais</span><b>11</b></div>
+        <div class="resumo"><span>Primeiro foco</span><b>Usuários</b></div>
+        <div class="resumo"><span>Execução</span><b>Local</b></div>
+      </div>
+
+      <section id="mapas" class="bloco-pesquisa" data-termos="mapas mentais visão geral aprendizagem equipe banco dados usuário combinação">
+        <div class="secao-titulo">
+          <div><span class="etiqueta verde">Mapas mentais</span><h2>Um assunto por vez, do geral ao detalhe</h2><p>Comece pelo tema à esquerda. Siga um ramo colorido até os detalhes à direita e depois passe ao próximo, de cima para baixo. Os números indicam a ordem de leitura, não a prioridade das pessoas. Use + para ampliar e arraste para mover.</p></div>
+        </div>
+        <div class="mapas-painel">
+          <div class="mapas-barra">
+            <div class="mapas-abas" id="mapas-abas" role="tablist" aria-label="Escolher mapa mental"></div>
+            <div class="mapa-controles" aria-label="Controles do mapa">
+              <button class="mapa-controle" type="button" id="mapa-menos" aria-label="Afastar mapa">−</button>
+              <button class="mapa-controle" type="button" id="mapa-resetar">Ver inteiro</button>
+              <button class="mapa-controle" type="button" id="mapa-mais" aria-label="Aproximar mapa">+</button>
+            </div>
+          </div>
+          <div class="mapa-viewport" id="mapa-viewport">
+            <svg class="mapa-svg" id="mapa-svg" viewBox="0 0 1400 800" role="img" aria-labelledby="mapa-titulo mapa-descricao">
+              <title id="mapa-titulo">Mapa mental do projeto Troquei</title>
+              <desc id="mapa-descricao">Mapa interativo com um assunto central e suas ramificações.</desc>
+              <defs>
+                <marker id="seta-mapa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse" markerUnits="strokeWidth">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#5f83a4"></path>
+                </marker>
+              </defs>
+              <g id="mapa-conteudo"></g>
+            </svg>
+          </div>
+          <div class="mapa-legenda"><span id="mapa-nome">Visão geral do projeto</span><span id="mapa-legenda-texto">1, 2, 3… = ordem sugerida · setas = sentido de leitura</span></div>
+        </div>
+      </section>
+
+      <section id="visao" class="bloco-pesquisa" data-termos="visão geral objetivo funções equipe banco cronograma avaliações trello limites">
+        <div class="secao-titulo">
+          <div><span class="etiqueta">01 · Visão geral</span><h2>O que é o Troquei?</h2></div>
+        </div>
+        <div class="visao-descricao">
+          <p>O <strong>Troquei</strong> é um projeto de site para facilitar a troca de objetos entre pessoas. A ideia é dar um novo uso ao que alguém já não precisa: cada usuário cria sua conta, anuncia seus itens e procura algo que tenha interesse em receber.</p>
+          <p>A descoberta funciona por interesse mútuo. Uma pessoa marca que gostou do item de outra; quando a outra também gosta de um item dela, o sistema registra uma combinação. A partir daí, as duas podem conversar para acertar a troca e, depois, marcá-la como concluída.</p>
+          <p>O objetivo do grupo é construir esse caminho funcionando de verdade, com páginas, regras e dados salvos. Como é um trabalho acadêmico, o site será executado no próprio computador, com Flask e SQLite, sem necessidade de contratar hospedagem ou serviços pagos.</p>
+          <p>O trabalho será dividido em entregas semanais, acompanhadas pelo docente. Na apresentação de <strong>7 de outubro</strong>, o foco é demonstrar contas, categorias e gerenciamento de itens. Até o <strong>fim de novembro</strong>, o grupo deverá apresentar o fluxo completo e conseguir explicar como cada parte foi feita.</p>
+        </div>
+      </section>
+
+      <section id="produto" class="bloco-pesquisa" data-termos="produto usuário cadastro conta perfil item vitrine gostei combinação mensagens troca escopo">
+        <div class="secao-titulo">
+          <div><span class="etiqueta">02 · Produto</span><h2>O caminho do usuário</h2><p>Cada nova função deve completar mais um pedaço deste caminho, sem recomeçar o site.</p></div>
+        </div>
+        <div class="fluxo" aria-label="Fluxo principal do usuário">
+          <div class="passo"><span class="passo-numero">1</span><b>Criar conta</b><small>Nome, e-mail e senha</small></div>
+          <div class="passo"><span class="passo-numero">2</span><b>Entrar</b><small>Sessão identifica o usuário</small></div>
+          <div class="passo"><span class="passo-numero">3</span><b>Cadastrar item</b><small>Foto, categoria e descrição</small></div>
+          <div class="passo"><span class="passo-numero">4</span><b>Ver a vitrine</b><small>Itens disponíveis de outras pessoas</small></div>
+          <div class="passo"><span class="passo-numero">5</span><b>Avaliar</b><small>Gostei ou não gostei</small></div>
+          <div class="passo"><span class="passo-numero">6</span><b>Combinar</b><small>Interesse recíproco</small></div>
+          <div class="passo"><span class="passo-numero">7</span><b>Conversar</b><small>Mensagens da combinação</small></div>
+          <div class="passo"><span class="passo-numero">8</span><b>Concluir</b><small>Itens deixam a vitrine</small></div>
+        </div>
+        <div class="grade-2" style="margin-top:1rem">
+          <div class="cartao destaque">
+            <h3>Entra no projeto</h3>
+            <ul>
+              <li>cadastro, entrada, saída e perfil;</li>
+              <li>categorias e gerenciamento de itens;</li>
+              <li>vitrine, filtros e decisões;</li>
+              <li>combinações e mensagens simples;</li>
+              <li>proteção de senha e controle de acesso;</li>
+              <li>dados preparados para demonstração.</li>
+            </ul>
+          </div>
+          <div class="cartao">
+            <h3>Fica para uma versão futura</h3>
+            <ul>
+              <li>aplicativo móvel e publicação na internet;</li>
+              <li>mapas e distância real;</li>
+              <li>biometria e verificação documental;</li>
+              <li>chat instantâneo e notificações;</li>
+              <li>pagamentos ou inteligência artificial;</li>
+              <li>estrutura de segurança empresarial.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="tecnologia" class="bloco-pesquisa" data-termos="tecnologias python flask html css javascript jinja sqlite sqlalchemy werkzeug github trello mermaid arquitetura arquivos">
+        <div class="secao-titulo">
+          <div><span class="etiqueta">03 · Tecnologia</span><h2>Ferramentas escolhidas</h2><p>Tecnologias suficientes para funcionar, sem obrigar o grupo a aprender estruturas avançadas no mesmo prazo.</p></div>
+        </div>
+        <div class="tabela-wrap">
+          <table>
+            <thead><tr><th>Ferramenta</th><th>Uso</th><th>Por que</th><th>Quem</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Python 3</strong></td><td>Regras do sistema</td><td>Já foi visto e possui escrita clara</td><td>Fernando e João</td></tr>
+              <tr><td><strong>Flask</strong></td><td>Servidor local e caminhos</td><td>Pequeno e direto</td><td>Fernando</td></tr>
+              <tr><td><strong>HTML5</strong></td><td>Estrutura das páginas</td><td>Base da interface</td><td>Arthur</td></tr>
+              <tr><td><strong>CSS3</strong></td><td>Aparência e adaptação</td><td>Dispensa estrutura visual externa</td><td>Arthur</td></tr>
+              <tr><td><strong>JavaScript</strong></td><td>Interações pequenas</td><td>Sem React ou TypeScript</td><td>Arthur</td></tr>
+              <tr><td><strong>Jinja</strong></td><td>Dados do Flask no HTML</td><td>Já acompanha o Flask</td><td>Fernando e Arthur</td></tr>
+              <tr><td><strong>SQLite</strong></td><td>Banco em arquivo local</td><td>Não precisa de servidor</td><td>João e Fernando</td></tr>
+              <tr><td><strong>Flask-SQLAlchemy</strong></td><td>Modelos e consultas</td><td>Simplifica a ligação com SQLite</td><td>João e Fernando</td></tr>
+              <tr><td><strong>Werkzeug</strong></td><td>Proteção da senha</td><td>Integra-se ao Flask</td><td>Fernando e Pedro</td></tr>
+              <tr><td><strong>GitHub e Trello</strong></td><td>Versões e tarefas</td><td>Evita perda e desorganização</td><td>Todos</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cartao" style="margin-top:1rem">
+          <h3>Como uma ação percorre o sistema</h3>
+          <div class="fluxo" style="margin-top:.7rem">
+            <div class="passo"><b>Navegador</b><small>HTML, CSS e JavaScript</small></div>
+            <div class="passo"><b>Flask</b><small>Recebe o pedido</small></div>
+            <div class="passo"><b>Validação</b><small>Aplica as regras</small></div>
+            <div class="passo"><b>SQLAlchemy</b><small>Conversa com os dados</small></div>
+            <div class="passo"><b>SQLite</b><small>Guarda o registro</small></div>
+            <div class="passo"><b>Jinja</b><small>Devolve a página</small></div>
+          </div>
+        </div>
+        <details style="margin-top:.8rem">
+          <summary>Estrutura inicial das pastas</summary>
+          <div class="detalhe-conteudo">
+            <p><code>app.py</code> inicia o Flask; <code>models.py</code> guarda os modelos; <code>templates/</code> contém as páginas; <code>static/css/</code> e <code>static/js/</code> cuidam do visual; <code>static/uploads/</code> recebe as imagens; <code>instance/troquei.db</code> é o banco; <code>seed.py</code> prepara dados de demonstração.</p>
+          </div>
+        </details>
+      </section>
+
+      <section id="banco" class="bloco-pesquisa" data-termos="banco dados entidades users categories items swipes matches messages chave primária estrangeira relacionamento">
+        <div class="secao-titulo">
+          <div><span class="etiqueta">04 · Banco de dados</span><h2>Seis entidades conectadas</h2><p>Os nomes em inglês são mantidos apenas porque aparecerão desse modo no código.</p></div>
+        </div>
+        <div class="entidades">
+          <article class="entidade"><h3>Usuários · <code>Users</code></h3><ul><li>id <em>PK</em></li><li>nome <em>texto</em></li><li>email <em>único</em></li><li>senha_hash <em>protegida</em></li><li>localização <em>opcional</em></li><li>foto_perfil <em>arquivo</em></li></ul></article>
+          <article class="entidade"><h3>Categorias · <code>Categories</code></h3><ul><li>id <em>PK</em></li><li>nome <em>único</em></li><li>ícone <em>texto</em></li></ul></article>
+          <article class="entidade"><h3>Itens · <code>Items</code></h3><ul><li>id <em>PK</em></li><li>user_id <em>FK</em></li><li>category_id <em>FK</em></li><li>título e descrição <em>texto</em></li><li>foto e conservação <em>texto</em></li><li>estado <em>disponível/trocado</em></li></ul></article>
+          <article class="entidade"><h3>Avaliações · <code>Swipes</code></h3><ul><li>id <em>PK</em></li><li>user_id <em>FK</em></li><li>target_item_id <em>FK</em></li><li>ação <em>gostei/não gostei</em></li><li>criado_em <em>data</em></li></ul></article>
+          <article class="entidade"><h3>Combinações · <code>Matches</code></h3><ul><li>id <em>PK</em></li><li>item_a_id <em>FK</em></li><li>item_b_id <em>FK</em></li><li>estado <em>ativo/concluído</em></li><li>criado_em <em>data</em></li></ul></article>
+          <article class="entidade"><h3>Mensagens · <code>Messages</code></h3><ul><li>id <em>PK</em></li><li>match_id <em>FK</em></li><li>sender_id <em>FK</em></li><li>conteúdo <em>texto</em></li><li>criado_em <em>data</em></li><li>lida <em>sim/não</em></li></ul></article>
+        </div>
+        <div class="relacoes" aria-label="Relações do banco">
+          <span class="relacao">Usuário → publica → Itens</span>
+          <span class="relacao">Categoria → organiza → Itens</span>
+          <span class="relacao">Usuário → realiza → Avaliações</span>
+          <span class="relacao">Itens → formam → Combinação</span>
+          <span class="relacao">Combinação → possui → Mensagens</span>
+        </div>
+      </section>
+
+      <section id="usuarios" class="bloco-pesquisa" data-termos="primeiro cartão users usuários cadastro senha email formulário teste trello">
+        <div class="secao-titulo">
+          <div><span class="etiqueta verde">05 · Fazer agora</span><h2>Primeiro cartão: Usuários</h2><p>A base para entrada na conta, propriedade dos itens, avaliações e mensagens.</p></div>
+          <button class="botao primario" id="copiar-trello" type="button">Copiar cartão do Trello</button>
+        </div>
+        <div class="fluxo" aria-label="Fluxo de cadastro">
+          <div class="passo"><b>Preencher</b><small>Nome, e-mail e senha</small></div>
+          <div class="passo"><b>Validar</b><small>Campos e confirmação</small></div>
+          <div class="passo"><b>Consultar</b><small>E-mail já existe?</small></div>
+          <div class="passo"><b>Proteger</b><small>Gerar resumo da senha</small></div>
+          <div class="passo"><b>Salvar</b><small>Registrar no SQLite</small></div>
+          <div class="passo"><b>Responder</b><small>Sucesso ou erro claro</small></div>
+        </div>
+        <div class="grade-2" style="margin-top:1rem">
+          <div class="cartao">
+            <h3>Campos</h3>
+            <div class="tabela-wrap">
+              <table>
+                <tbody>
+                  <tr><td><code>id</code></td><td>automático e único</td></tr>
+                  <tr><td><code>nome</code></td><td>2 a 100 caracteres</td></tr>
+                  <tr><td><code>email</code></td><td>obrigatório e único</td></tr>
+                  <tr><td><code>senha_hash</code></td><td>nunca guarda senha pura</td></tr>
+                  <tr><td><code>latitude/longitude</code></td><td>opcionais no protótipo</td></tr>
+                  <tr><td><code>foto_perfil</code></td><td>caminho ou imagem padrão</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="cartao destaque">
+            <h3>Critérios de conclusão</h3>
+            <div class="lista-marcavel">
+              <label class="item-marcavel"><input type="checkbox" data-progresso="users-app"><span>Aplicação abre sem erro.</span></label>
+              <label class="item-marcavel"><input type="checkbox" data-progresso="users-tabela"><span>Tabela de usuários existe.</span></label>
+              <label class="item-marcavel"><input type="checkbox" data-progresso="users-valido"><span>Cadastro válido cria uma conta.</span></label>
+              <label class="item-marcavel"><input type="checkbox" data-progresso="users-email"><span>E-mail repetido é recusado.</span></label>
+              <label class="item-marcavel"><input type="checkbox" data-progresso="users-senha"><span>Senha pura não aparece no banco.</span></label>
+              <label class="item-marcavel"><input type="checkbox" data-progresso="users-dois-pcs"><span>Dois integrantes conseguem executar.</span></label>
+            </div>
+          </div>
+        </div>
+        <details style="margin-top:.8rem">
+          <summary>Ordem das subtarefas e responsáveis</summary>
+          <div class="detalhe-conteudo">
+            <ol>
+              <li>João confirma campos, tipos e restrições.</li>
+              <li>Fernando configura Flask, SQLite e SQLAlchemy.</li>
+              <li>João e Fernando criam o modelo <code>User</code>.</li>
+              <li>Arthur cria o formulário de cadastro.</li>
+              <li>Fernando cria os caminhos GET e POST.</li>
+              <li>Pedro revisa validação e proteção da senha.</li>
+              <li>Matheus conduz os testes e reúne as evidências.</li>
+            </ol>
+          </div>
+        </details>
+        <details>
+          <summary>Testes manuais obrigatórios</summary>
+          <div class="detalhe-conteudo">
+            <ul>
+              <li>cadastro válido;</li>
+              <li>e-mail repetido;</li>
+              <li>e-mail inválido;</li>
+              <li>nome vazio;</li>
+              <li>senhas diferentes;</li>
+              <li>senha abaixo do mínimo;</li>
+              <li>conferência de que existe resumo seguro no banco;</li>
+              <li>atualização da página sem criar duplicata.</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <section id="cronograma" class="bloco-pesquisa" data-termos="cronograma semanas setembro outubro novembro avaliação sprint entrega">
+        <div class="secao-titulo">
+          <div><span class="etiqueta">06 · Cronograma</span><h2>Onze entregas semanais</h2><p>Ao fim de cada semana deve existir algo pequeno que possa ser demonstrado.</p></div>
+        </div>
+        <div class="linha-tempo" id="linha-tempo"></div>
+      </section>
+
+      <section id="estudos" class="bloco-pesquisa" data-termos="estudo aprender método oficina nível exercício rotina fontes português inteligência artificial users">
+        <div class="secao-titulo">
+          <div><span class="etiqueta verde">07 · Aprendizagem</span><h2>Aprender somente o que será usado</h2><p>O grupo estuda um conceito curto, pratica fora do projeto, aplica no Troquei e explica o que fez.</p></div>
+        </div>
+        <div class="metodo" aria-label="Método de estudo">
+          <div class="passo"><span class="passo-numero">1</span><b>Escolher</b><small>Uma tarefa pequena</small></div>
+          <div class="passo"><span class="passo-numero">2</span><b>Compreender</b><small>15 a 25 minutos</small></div>
+          <div class="passo"><span class="passo-numero">3</span><b>Reproduzir</b><small>Exemplo separado</small></div>
+          <div class="passo"><span class="passo-numero">4</span><b>Aplicar</b><small>No Troquei</small></div>
+          <div class="passo"><span class="passo-numero">5</span><b>Testar</b><small>E explicar a alguém</small></div>
+        </div>
+        <div class="grade-2" style="margin-top:1rem">
+          <div class="cartao">
+            <h3>Ritmo mínimo da semana</h3>
+            <ul>
+              <li><strong>30–45 min:</strong> conhecer o conceito;</li>
+              <li><strong>45–60 min:</strong> reproduzir exemplo;</li>
+              <li><strong>60–90 min:</strong> aplicar na tarefa;</li>
+              <li><strong>30–60 min:</strong> testar e explicar;</li>
+              <li><strong>até 30 min:</strong> reunião do grupo.</li>
+            </ul>
+          </div>
+          <div class="cartao">
+            <h3>Níveis de domínio</h3>
+            <ol>
+              <li><strong>Ainda não vi:</strong> não reconheço.</li>
+              <li><strong>Reconheço:</strong> entendo a explicação.</li>
+              <li><strong>Faço com exemplo:</strong> posso começar acompanhado.</li>
+              <li><strong>Faço no projeto:</strong> posso concluir a tarefa.</li>
+              <li><strong>Explico e corrijo:</strong> conteúdo consolidado.</li>
+            </ol>
+          </div>
+        </div>
+        <details style="margin-top:.8rem" open>
+          <summary>Oficina inicial obrigatória</summary>
+          <div class="detalhe-conteudo grade-2">
+            <div>
+              <h4>Encontro 1 — entender</h4>
+              <ol>
+                <li>Abrir pasta e terminal no VS Code.</li>
+                <li>Executar um arquivo Python.</li>
+                <li>Abrir um HTML.</li>
+                <li>Iniciar um Flask mínimo.</li>
+                <li>Identificar interface, servidor e banco.</li>
+              </ol>
+            </div>
+            <div>
+              <h4>Encontro 2 — compartilhar</h4>
+              <ol>
+                <li>Baixar o projeto.</li>
+                <li>Instalar dependências.</li>
+                <li>Alterar um arquivo de teste.</li>
+                <li>Registrar e enviar a versão.</li>
+                <li>Outro integrante baixa e executa.</li>
+              </ol>
+            </div>
+          </div>
+        </details>
+        <details>
+          <summary>Plano de arranque: os cinco primeiros dias</summary>
+          <div class="detalhe-conteudo">
+            <div class="tabela-wrap">
+              <table>
+                <thead><tr><th>Dia</th><th>Trabalho conjunto</th><th>Resultado</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>Abrir e executar Flask</td><td>Todos veem a aplicação</td></tr>
+                  <tr><td>2</td><td>Entender formulário e tabela</td><td>Fluxo e modelo desenhados</td></tr>
+                  <tr><td>3</td><td>Integrar formulário, servidor e banco</td><td>Primeiro usuário salvo</td></tr>
+                  <tr><td>4</td><td>Testar erros e segurança</td><td>E-mail repetido recusado e senha protegida</td></tr>
+                  <tr><td>5</td><td>Demonstrar e explicar</td><td>Evidências no Trello</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+        <details>
+          <summary>Como usar inteligência artificial sem apenas copiar</summary>
+          <div class="detalhe-conteudo grade-2">
+            <div>
+              <h4>Pedidos úteis</h4>
+              <ul>
+                <li>“Explique este erro em português.”</li>
+                <li>“Explique esta função linha por linha.”</li>
+                <li>“Crie três exercícios pequenos.”</li>
+                <li>“Faça perguntas para conferir se entendi.”</li>
+                <li>“Aponte riscos sem reescrever tudo.”</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Evitar</h4>
+              <ul>
+                <li>“Faça o projeto inteiro.”</li>
+                <li>“Crie todos os arquivos de uma vez.”</li>
+                <li>“Resolva sem explicar.”</li>
+                <li>Código que ninguém consegue apresentar.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section id="guias" class="bloco-pesquisa" data-termos="guias português python flask sqlite sqlalchemy html css javascript jinja segurança git github trello estudo exercício">
+        <div class="secao-titulo">
+          <div><span class="etiqueta verde">07B · Guias em português</span><h2>O caminho de estudo, sem depender de manual em inglês</h2><p>Comecem pelo guia interno da tarefa. O material externo serve apenas para reforçar, e os links indicados abaixo estão em português.</p></div>
+        </div>
+        <div class="cartao guia-introducao">
+          <h3>Como usar esta biblioteca</h3>
+          <p><strong>Não estudem tudo de uma vez.</strong> Abram somente o guia ligado ao cartão da semana, sigam a ordem numerada, façam o exercício fora do projeto e só então apliquem no Troquei. Se a pessoa não consegue explicar o resultado em palavras simples, ainda falta revisar.</p>
+        </div>
+        <div class="guias-grade">
+          <details id="guia-planejamento">
+            <summary>Planejamento, Trello e regras — Matheus</summary>
+            <div class="detalhe-conteudo guia-resumo">
+              <ol class="guia-roteiro">
+                <li><strong>Desenhe o começo e o fim.</strong> Exemplo: visitante preenche cadastro → sistema valida → conta é criada ou aparece um erro.</li>
+                <li><strong>Transforme cada etapa em regra.</strong> Use frases como “se… então…” e inclua os casos que devem ser recusados.</li>
+                <li><strong>Quebre em cartões pequenos.</strong> Cada cartão deve caber em até dois encontros e ter responsável, teste e evidência.</li>
+                <li><strong>Revise com quem programará.</strong> Confirme se entrada, resultado e erro estão claros antes de começar o código.</li>
+              </ol>
+              <div class="guia-meta">
+                <p><strong>Exercício:</strong> escrever o fluxo de cadastro com um caminho correto e quatro erros possíveis.</p>
+                <p><strong>Pronto quando:</strong> outra pessoa consegue executar os testes lendo apenas o cartão.</p>
+                <p><strong>Procure por:</strong> “história de usuário exemplos em português” e “critérios de aceitação exemplos”.</p>
+              </div>
+            </div>
+          </details>
+
+          <details id="guia-python">
+            <summary>Python básico para o projeto — todos, sobretudo Fernando</summary>
+            <div class="detalhe-conteudo guia-resumo">
+              <ol class="guia-roteiro">
+                <li><strong>Valores e variáveis:</strong> texto, número, verdadeiro/falso e listas.</li>
+                <li><strong>Decisões:</strong> usar <code>if</code>, <code>elif</code> e <code>else</code> para aceitar ou recusar dados.</li>
+                <li><strong>Repetições:</strong> percorrer listas com <code>for</code>.</li>
+                <li><strong>Funções:</strong> receber dados, executar uma responsabilidade e devolver um resultado.</li>
+                <li><strong>Erros:</strong> ler a última linha da mensagem, localizar o arquivo e testar uma mudança de cada vez.</li>
+              </ol>
+              <div class="guia-meta">
+                <p><strong>Exercício:</strong> criar uma função que receba nome, e-mail e senha e devolva uma lista de erros.</p>
+                <p><strong>Pronto quando:</strong> consegue alterar as regras sem copiar o programa inteiro.</p>
+                <div class="guia-links"><a href="https://www.cursoemvideo.com/curso/python-3-mundo-1/" target="_blank" rel="noopener noreferrer">Curso de Python em português ↗</a><a href="https://docs.python.org/pt-br/3/tutorial/" target="_blank" rel="noopener noreferrer">Tutorial oficial em português ↗</a></div>
+              </div>
+            </div>
+          </details>
+
+          <details id="guia-flask">
+            <summary>Flask: servidor, rotas e formulários — Fernando</summary>
+            <div class="detalhe-conteudo guia-resumo">
+              <ol class="guia-roteiro">
+                <li><strong>Aplicação mínima:</strong> criar o objeto Flask e abrir uma página no navegador.</li>
+                <li><strong>Rota:</strong> entender que uma função responde a um endereço, como <code>/cadastro</code>.</li>
+                <li><strong>GET e POST:</strong> GET mostra o formulário; POST recebe e valida o que foi enviado.</li>
+                <li><strong>Modelo de página:</strong> usar <code>render_template</code> para separar Python e HTML.</li>
+                <li><strong>Banco:</strong> salvar apenas depois da validação e confirmar a alteração.</li>
+                <li><strong>Sessão e permissão:</strong> identificar quem entrou antes de mostrar ou alterar dados privados.</li>
+              </ol>
+              <div class="guia-meta">
+                <p><strong>Exercício:</strong> fazer uma página com formulário de nome; ao enviar, mostrar uma saudação ou um erro.</p>
+                <p><strong>Pronto quando:</strong> explica o caminho navegador → rota → validação → resposta.</p>
+                <div class="guia-links"><a href="https://www.dio.me/courses/desenvolvimento-avancado-de-rest-api-com-flask" target="_blank" rel="noopener noreferrer">Curso de Flask em português ↗</a></div>
+              </div>
+            </div>
+          </details>
+
+          <details id="guia-banco">
+            <summary>SQLite e modelos SQLAlchemy — João e Fernando</summary>
+            <div class="detalhe-conteudo guia-resumo">
+              <ol class="guia-roteiro">
+                <li><strong>Entidades:</strong> cada assunto principal vira uma tabela, como Usuários ou Itens.</li>
+                <li><strong>Campos:</strong> escolha nome, tipo, obrigatoriedade e regra de unicidade.</li>
+                <li><strong>Chaves:</strong> a primária identifica; a estrangeira liga um registro a outro.</li>
+                <li><strong>Modelo:</strong> represente a tabela com uma classe Python no SQLAlchemy.</li>
+                <li><strong>Operações:</strong> pratique criar, consultar, atualizar e excluir.</li>
+                <li><strong>Teste:</strong> use dados pequenos e confira o banco antes de avançar para outra entidade.</li>
+              </ol>
+              <div class="guia-meta">
+                <p><strong>Exercício:</strong> criar Usuários e Itens, ligar cada item a um dono e consultar os itens de um usuário.</p>
+                <p><strong>Pronto quando:</strong> e-mail repetido é recusado e um item nunca fica sem dono.</p>
+                <p><strong>Procure por:</strong> “SQLite do zero em português” e “Flask SQLAlchemy em português”.</p>
+                <div class="guia-links"><a href="https://www.youtube.com/playlist?list=PLM3JKOX-K55-uZ2fB5CoOAzVr2-okDXMG" target="_blank" rel="noopener noreferrer">Curso de SQLite em português ↗</a><a href="https://www.dio.me/courses/desenvolvimento-avancado-de-rest-api-com-flask" target="_blank" rel="noopener noreferrer">Flask com persistência em português ↗</a></div>
+              </div>
+            </div>
+          </details>
+
+          <details id="guia-interface">
+            <summary>HTML e CSS para as telas — Arthur</summary>
+            <div class="detalhe-conteudo guia-resumo">
+              <ol class="guia-roteiro">
+                <li><strong>Estrutura HTML:</strong> cabeçalho, navegação, conteúdo principal, formulários e botões.</li>
+                <li><strong>Formulários:</strong> todo campo precisa de rótulo, nome e tipo correto.</li>
+                <li><strong>Caixas e espaço:</strong> domine margem, preenchimento, borda, largura e altura.</li>
+                <li><strong>Organização:</strong> use Flexbox para linhas e Grid para conjuntos de cartões.</li>
+                <li><strong>Celular primeiro:</strong> teste em 360 px e aumente a tela depois.</li>
+                <li><strong>Estados:</strong> mostre vazio, carregado, sucesso e erro sem depender apenas de cor.</li>
+              </ol>
+              <div class="guia-meta">
+                <p><strong>Exercício:</strong> montar um formulário de cadastro e um cartão de item que funcionem no celular.</p>
+                <p><strong>Pronto quando:</strong> é possível usar a página com teclado e não há rolagem lateral em 360 px.</p>
+                <div class="guia-links"><a href="https://www.cursoemvideo.com/curso/html5-css3-modulo1/" target="_blank" rel="noopener noreferrer">HTML e CSS em português ↗</a><a href="https://developer.mozilla.org/pt-BR/docs/Learn_web_development" target="_blank" rel="noopener noreferrer">Guia MDN em português ↗</a></div>
+              </div>
+            </div>
+          </details>
+
+          <details id="guia-javascript">
+            <summary>JavaScript e Jinja sem confusão — Arthur e Fernando</summary>
+            <div class="detalhe-conteudo guia-resumo">
+              <ol class="guia-roteiro">
+                <li><strong>Separe os papéis:</strong> Jinja monta o HTML no servidor; JavaScript reage dentro do navegador.</li>
+                <li><strong>Jinja:</strong> pratique mostrar variável, repetir cartões e decidir se um botão aparece.</li>
+                <li><strong>JavaScript:</strong> selecione um elemento, escute um evento e altere texto, classe ou atributo.</li>
+                <li><strong>Use pouco:</strong> prévia de foto, confirmação e botões; regras importantes continuam no servidor.</li>
+              </ol>
+              <div class="guia-meta">
+                <p><strong>Exercício:</strong> repetir três itens com Jinja e mostrar a prévia da foto escolhida com JavaScript.</p>
+                <p><strong>Pronto quando:</strong> consegue dizer se cada comportamento acontece no servidor ou no navegador.</p>
+                <div class="guia-links"><a href="https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Core/Scripting" target="_blank" rel="noopener noreferrer">JavaScript em português ↗</a></div>
+              </div>
+            </div>
+          </details>
+
+          <details id="guia-seguranca">
+            <summary>Senha, acesso e envio de imagens — Pedro e Fernando</summary>
+            <div class="detalhe-conteudo guia-resumo">
+              <ol class="guia-roteiro">
+                <li><strong>Senha:</strong> gerar resumo seguro; nunca salvar nem mostrar a senha pura.</li>
+                <li><strong>Validação no servidor:</strong> tratar todo dado do navegador como não confiável.</li>
+                <li><strong>Autorização:</strong> confirmar que a pessoa é dona do item antes de editar ou excluir.</li>
+                <li><strong>Imagem:</strong> limitar extensão e tamanho, gerar nome seguro e guardar em pasta definida.</li>
+                <li><strong>Teste negativo:</strong> tentar e-mail repetido, campo vazio, item alheio e arquivo proibido.</li>
+              </ol>
+              <div class="guia-meta">
+                <p><strong>Exercício:</strong> testar cinco entradas inválidas e anotar resposta esperada e resposta obtida.</p>
+                <p><strong>Pronto quando:</strong> o sistema recusa os casos sem cair e sem revelar informação privada.</p>
+                <div class="guia-links"><a href="https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login-pt" target="_blank" rel="noopener noreferrer">Autenticação com Flask em português ↗</a></div>
+              </div>
+            </div>
+          </details>
+
+          <details id="guia-git">
+            <summary>Git e GitHub para trabalhar em grupo — todos</summary>
+            <div class="detalhe-conteudo guia-resumo">
+              <ol class="guia-roteiro">
+                <li><strong>Clonar:</strong> baixar o projeto uma única vez.</li>
+                <li><strong>Atualizar:</strong> puxar as mudanças antes de começar.</li>
+                <li><strong>Conferir:</strong> usar <code>git status</code> e revisar apenas os arquivos da sua tarefa.</li>
+                <li><strong>Registrar:</strong> criar uma alteração pequena com mensagem clara.</li>
+                <li><strong>Compartilhar:</strong> enviar e pedir para outra pessoa executar.</li>
+              </ol>
+              <div class="guia-meta">
+                <p><strong>Exercício:</strong> cada integrante altera uma frase de teste, registra e compartilha sem apagar a mudança anterior.</p>
+                <p><strong>Pronto quando:</strong> dois integrantes conseguem atualizar e executar o mesmo projeto.</p>
+                <div class="guia-links"><a href="https://docs.github.com/pt/get-started/using-github/hello-world" target="_blank" rel="noopener noreferrer">GitHub: primeiro projeto em português ↗</a><a href="https://docs.github.com/pt/get-started/learning-to-code/getting-started-with-git" target="_blank" rel="noopener noreferrer">Git: primeiros passos em português ↗</a></div>
+              </div>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section id="equipe" class="bloco-pesquisa" data-termos="equipe matheus joão fernando arthur pedro planejamento banco servidor frontend segurança trilha estudo">
+        <div class="secao-titulo">
+          <div><span class="etiqueta">08 · Equipe</span><h2>O que cada pessoa precisa aprender</h2><p>Selecione alguém para ver somente a trilha daquela função.</p></div>
+        </div>
+        <div class="filtros-pessoas" id="filtros-pessoas" aria-label="Filtrar integrantes"></div>
+        <div id="lista-pessoas"></div>
+      </section>
+
+      <section id="combinacao" class="bloco-pesquisa" data-termos="combinação match interesse recíproco gostei regra item usuário">
+        <div class="secao-titulo">
+          <div><span class="etiqueta">09 · Regra central</span><h2>Quando existe uma combinação?</h2><p>A combinação acontece entre dois itens específicos, não apenas entre duas pessoas.</p></div>
+        </div>
+        <div class="regra-combinacao">
+          <div class="regra-bloco"><strong>Ana gosta do item de Bruno</strong><span>O sistema salva a decisão, desde que Ana não tenha avaliado o item antes.</span></div>
+          <div class="seta" aria-hidden="true">+</div>
+          <div class="regra-bloco"><strong>Bruno gosta de um item disponível de Ana</strong><span>A segunda decisão cria a reciprocidade.</span></div>
+          <div class="seta" aria-hidden="true">=</div>
+          <div class="regra-bloco" style="border-color:var(--verde)"><strong>Combinação ativa</strong><span>Os dois participantes podem abrir a conversa.</span></div>
+        </div>
+        <div class="grade-2" style="margin-top:1rem">
+          <div class="cartao"><h3>Sempre verificar</h3><ul><li>é item de outra pessoa;</li><li>usuário ainda não avaliou;</li><li>os dois itens estão disponíveis;</li><li>existe interesse recíproco;</li><li>o mesmo par ainda não possui combinação.</li></ul></div>
+          <div class="cartao"><h3>Ao concluir a troca</h3><ul><li>combinação recebe estado <code>concluido</code>;</li><li>os dois itens recebem estado <code>trocado</code>;</li><li>itens deixam de aparecer na vitrine;</li><li>histórico continua disponível para os participantes.</li></ul></div>
+        </div>
+      </section>
+
+      <section id="organizacao" class="bloco-pesquisa" data-termos="organização trello colunas bloqueado ajuda 40 minutos reunião evidência cartões">
+        <div class="secao-titulo">
+          <div><span class="etiqueta">10 · Organização</span><h2>Regras para não ficar parado</h2><p>O trabalho precisa mostrar movimento e aprendizado toda semana.</p></div>
+        </div>
+        <div class="grade-3">
+          <div class="cartao destaque"><h3>Regra dos 40 minutos</h3><p>Sem progresso? Registrar o que tentou, copiar o erro, reduzir o problema e pedir ajuda com contexto.</p></div>
+          <div class="cartao"><h3>Uma tarefa por vez</h3><p>Cada pessoa mantém somente um cartão principal em “Em andamento”.</p></div>
+          <div class="cartao"><h3>Integrar duas vezes</h3><p>Interface e servidor se encontram pelo menos duas vezes por semana.</p></div>
+        </div>
+        <details style="margin-top:.8rem" open>
+          <summary>Colunas do Trello</summary>
+          <div class="detalhe-conteudo">
+            <div class="fluxo">
+              <div class="passo"><b>Ideias futuras</b><small>Fora do escopo atual</small></div>
+              <div class="passo"><b>Lista de tarefas</b><small>Ainda não escolhidas</small></div>
+              <div class="passo"><b>Semana atual</b><small>Compromisso da semana</small></div>
+              <div class="passo"><b>Em andamento</b><small>Uma por pessoa</small></div>
+              <div class="passo"><b>Revisão e teste</b><small>Outro membro confere</small></div>
+              <div class="passo"><b>Concluído</b><small>Integrado e com evidência</small></div>
+            </div>
+          </div>
+        </details>
+        <details>
+          <summary>O que um cartão precisa para ser concluído</summary>
+          <div class="detalhe-conteudo">
+            <ul><li>código integrado;</li><li>teste executado;</li><li>captura ou vídeo curto;</li><li>registro de versão identificável;</li><li>explicação de quem fez;</li><li>critérios marcados.</li></ul>
+          </div>
+        </details>
+      </section>
+
+      <section id="entrega" class="bloco-pesquisa" data-termos="entrega final checklist apresentação demonstração testes pronto qualidade novembro">
+        <div class="secao-titulo">
+          <div><span class="etiqueta amarela">11 · Entrega final</span><h2>Definição de pronto</h2><p>Marque os itens conforme forem testados. O progresso fica salvo neste navegador.</p></div>
+          <button type="button" class="botao" onclick="window.print()">Imprimir plano</button>
+        </div>
+        <div class="grade-3">
+          <div class="cartao"><h3>Conta e itens</h3><div class="lista-marcavel">
+            <label class="item-marcavel"><input type="checkbox" data-progresso="final-conta"><span>Cadastro, entrada e saída funcionam.</span></label>
+            <label class="item-marcavel"><input type="checkbox" data-progresso="final-senha"><span>Senha está protegida.</span></label>
+            <label class="item-marcavel"><input type="checkbox" data-progresso="final-itens"><span>Dono cria, edita e exclui itens.</span></label>
+            <label class="item-marcavel"><input type="checkbox" data-progresso="final-fotos"><span>Fotos válidas aparecem.</span></label>
+          </div></div>
+          <div class="cartao"><h3>Troca</h3><div class="lista-marcavel">
+            <label class="item-marcavel"><input type="checkbox" data-progresso="final-vitrine"><span>Vitrine e filtro funcionam.</span></label>
+            <label class="item-marcavel"><input type="checkbox" data-progresso="final-avaliacao"><span>Decisões ficam salvas.</span></label>
+            <label class="item-marcavel"><input type="checkbox" data-progresso="final-combinacao"><span>Interesse cruzado cria uma combinação.</span></label>
+            <label class="item-marcavel"><input type="checkbox" data-progresso="final-mensagem"><span>Participantes trocam mensagens.</span></label>
+          </div></div>
+          <div class="cartao"><h3>Apresentação</h3><div class="lista-marcavel">
+            <label class="item-marcavel"><input type="checkbox" data-progresso="final-dois-pcs"><span>Testado em dois computadores.</span></label>
+            <label class="item-marcavel"><input type="checkbox" data-progresso="final-dados"><span>Contas e itens de teste preparados.</span></label>
+            <label class="item-marcavel"><input type="checkbox" data-progresso="final-backup"><span>Cópia de segurança pronta.</span></label>
+            <label class="item-marcavel"><input type="checkbox" data-progresso="final-falas"><span>Cada integrante explica sua parte.</span></label>
+          </div></div>
+        </div>
+        <div class="aviso" style="margin-top:1rem"><strong>Regra final:</strong> o projeto está pronto quando o grupo consegue executar, demonstrar, testar e explicar. Muitas telas não substituem um fluxo menor que funciona de ponta a ponta.</div>
+      </section>
+
+      <footer>
+        Plano visual do projeto Troquei · aplicação acadêmica local · primeira avaliação em 7 de outubro de 2026.
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const mapasMentais = {
+  "geral": {
+    "nome": "Projeto",
+    "raiz": [
+      "Troquei",
+      "Projeto acadêmico de trocas"
+    ],
+    "nota": "Os ramos organizam os assuntos do projeto.",
+    "ramos": [
+      [
+        "Objetivo e funções",
+        [
+          [
+            "Reutilizar objetos",
+            "Facilitar trocas diretas"
+          ],
+          [
+            "Contas e anúncios",
+            "Cadastro, itens e vitrine"
+          ],
+          [
+            "Interesse mútuo",
+            "Combinações e mensagens"
+          ]
+        ]
+      ],
+      [
+        "Pessoas e organização",
+        [
+          [
+            "Cinco integrantes",
+            "Responsabilidades divididas"
+          ],
+          [
+            "Trello",
+            "Entregas e revisão semanal"
+          ],
+          [
+            "GitHub",
+            "Compartilhar versões"
+          ]
+        ]
+      ],
+      [
+        "Tecnologia e limites",
+        [
+          [
+            "Python e Flask",
+            "Aplicação no computador"
+          ],
+          [
+            "SQLite e SQLAlchemy",
+            "Banco local e seus modelos"
+          ],
+          [
+            "Escopo acadêmico",
+            "Sem hospedagem ou serviços pagos"
+          ]
+        ]
+      ],
+      [
+        "Avaliações",
+        [
+          [
+            "7 de outubro",
+            "Contas, categorias e itens"
+          ],
+          [
+            "Fim de novembro",
+            "Fluxo completo funcionando"
+          ],
+          [
+            "Resultado esperado",
+            "Executar, testar e explicar"
+          ]
+        ]
+      ]
+    ]
+  },
+  "estudo": {
+    "nome": "Aprendizagem",
+    "raiz": [
+      "Aprender fazendo",
+      "Entender, praticar e aplicar"
+    ],
+    "nota": "Siga a rotina de estudo; os níveis de domínio não são tarefas separadas.",
+    "ramos": [
+      [
+        "Base comum",
+        [
+          [
+            "Executar",
+            "Python, HTML e Flask"
+          ],
+          [
+            "Entender as partes",
+            "Interface, servidor e banco"
+          ],
+          [
+            "Compartilhar",
+            "Git e GitHub"
+          ]
+        ]
+      ],
+      [
+        "Estudo por tarefa",
+        [
+          [
+            "Escolher",
+            "Uma tarefa pequena"
+          ],
+          [
+            "Compreender",
+            "Um conceito em 15–25 minutos"
+          ],
+          [
+            "Reproduzir",
+            "Exemplo fora do projeto"
+          ]
+        ]
+      ],
+      [
+        "Aplicação",
+        [
+          [
+            "Aprofundar",
+            "O necessário para sua função"
+          ],
+          [
+            "Aplicar",
+            "Usar o conceito no Troquei"
+          ],
+          [
+            "Conferir",
+            "Testar e explicar a alguém"
+          ]
+        ]
+      ],
+      [
+        "Sinais de domínio",
+        [
+          [
+            "Com apoio",
+            "Faz acompanhando um exemplo"
+          ],
+          [
+            "Com autonomia",
+            "Consegue aplicar no projeto"
+          ],
+          [
+            "Com compreensão",
+            "Explica e corrige erros"
+          ]
+        ]
+      ]
+    ]
+  },
+  "equipe": {
+    "nome": "Equipe",
+    "raiz": [
+      "Equipe Troquei",
+      "Cinco pessoas, uma equipe"
+    ],
+    "nota": "Os números organizam a leitura. Não representam chefia nem prioridade.",
+    "ramos": [
+      [
+        "Planejamento",
+        [
+          [
+            "Matheus Pereira",
+            "Fluxos e regras de negócio"
+          ],
+          [
+            "Organização",
+            "Trello, testes e evidências"
+          ],
+          [
+            "Apresentação",
+            "Reunir e explicar as entregas"
+          ]
+        ]
+      ],
+      [
+        "Banco e servidor",
+        [
+          [
+            "João Victor",
+            "Modelos, relações e consultas"
+          ],
+          [
+            "Fernando Nunes",
+            "Rotas, regras e integração"
+          ],
+          [
+            "Trabalho em dupla",
+            "Ligar banco e aplicação"
+          ]
+        ]
+      ],
+      [
+        "Interface",
+        [
+          [
+            "Arthur Castilho",
+            "Páginas e formulários"
+          ],
+          [
+            "Adaptação",
+            "Telas utilizáveis no celular"
+          ],
+          [
+            "Interações",
+            "Mostrar e receber os dados"
+          ]
+        ]
+      ],
+      [
+        "Proteção e integração",
+        [
+          [
+            "Pedro Vieira",
+            "Arquivos e validações"
+          ],
+          [
+            "Testes negativos",
+            "Acessos e entradas inválidas"
+          ],
+          [
+            "Todos",
+            "Integrar, executar e explicar"
+          ]
+        ]
+      ]
+    ]
+  },
+  "dados": {
+    "nome": "Banco",
+    "raiz": [
+      "Banco Troquei",
+      "SQLite e SQLAlchemy"
+    ],
+    "nota": "Grupos de estudo, não um diagrama de chaves: as ligações mostram assunto e detalhe.",
+    "ramos": [
+      [
+        "Contas e categorias",
+        [
+          [
+            "Usuários",
+            "Contas, senha protegida e perfil"
+          ],
+          [
+            "Categorias",
+            "Organização dos anúncios"
+          ]
+        ]
+      ],
+      [
+        "Ofertas e decisões",
+        [
+          [
+            "Itens",
+            "Dono, categoria e disponibilidade"
+          ],
+          [
+            "Avaliações",
+            "Usuário, item e gostei/não gostei"
+          ]
+        ]
+      ],
+      [
+        "Trocas e conversa",
+        [
+          [
+            "Combinações",
+            "Dois itens e estado da troca"
+          ],
+          [
+            "Mensagens",
+            "Combinação, remetente e conteúdo"
+          ]
+        ]
+      ],
+      [
+        "Chaves e vínculos",
+        [
+          [
+            "Chave primária",
+            "Identifica cada registro"
+          ],
+          [
+            "Chave estrangeira",
+            "Referencia outro registro"
+          ],
+          [
+            "Exemplo de vínculo",
+            "Cada item pertence a um usuário"
+          ]
+        ]
+      ]
+    ]
+  },
+  "usuario": {
+    "nome": "Usuário",
+    "raiz": [
+      "Usar o Troquei",
+      "Da conta à troca"
+    ],
+    "nota": "Leia as fases de cima para baixo. Editar, excluir e filtrar são opções, não obrigações.",
+    "ramos": [
+      [
+        "Minha conta",
+        [
+          [
+            "Cadastrar",
+            "Nome, e-mail e senha"
+          ],
+          [
+            "Entrar",
+            "Iniciar a sessão"
+          ]
+        ]
+      ],
+      [
+        "Meus itens",
+        [
+          [
+            "Anunciar",
+            "Foto, categoria e descrição"
+          ],
+          [
+            "Gerenciar",
+            "Editar ou excluir meus itens"
+          ]
+        ]
+      ],
+      [
+        "Outras ofertas",
+        [
+          [
+            "Explorar",
+            "Itens disponíveis de outras pessoas"
+          ],
+          [
+            "Filtrar",
+            "Escolher uma categoria"
+          ],
+          [
+            "Avaliar",
+            "Gostei ou não gostei"
+          ]
+        ]
+      ],
+      [
+        "Minha troca",
+        [
+          [
+            "Combinar",
+            "Interesse recíproco em dois itens"
+          ],
+          [
+            "Conversar",
+            "Acertar os detalhes da troca"
+          ],
+          [
+            "Concluir",
+            "Itens deixam de aparecer na vitrine"
+          ]
+        ]
+      ]
+    ]
+  },
+  "combinacao": {
+    "nome": "Combinação",
+    "raiz": [
+      "Combinação",
+      "Interesse mútuo em dois itens"
+    ],
+    "nota": "Os dois interesses são condições conjuntas: tanto A quanto B pode gostar primeiro.",
+    "ramos": [
+      [
+        "Condições dos itens",
+        [
+          [
+            "Dois itens específicos",
+            "Pertencem a pessoas diferentes"
+          ],
+          [
+            "Disponibilidade",
+            "Nenhum foi trocado"
+          ],
+          [
+            "Limite",
+            "Não avaliar o próprio item"
+          ]
+        ]
+      ],
+      [
+        "Interesse recíproco",
+        [
+          [
+            "Pessoa A",
+            "Gosta do item de B"
+          ],
+          [
+            "Pessoa B",
+            "Gosta do item de A"
+          ]
+        ]
+      ],
+      [
+        "Evitar repetição",
+        [
+          [
+            "Uma decisão",
+            "Por usuário e item avaliado"
+          ],
+          [
+            "Um par",
+            "Não duplicar a combinação"
+          ]
+        ]
+      ],
+      [
+        "Resultado",
+        [
+          [
+            "Combinação ativa",
+            "Após validar as condições"
+          ],
+          [
+            "Conversa privada",
+            "Somente entre participantes"
+          ],
+          [
+            "Troca concluída",
+            "Os dois itens ficam trocados"
+          ]
+        ]
+      ]
+    ]
+  }
+};
+
+    const semanas = [
+      { n: 1, data: "17–23 de setembro", titulo: "Base e usuários", objetivo: "Preparar o projeto comum e criar a entidade de usuários.", entrega: "Flask abre e a tabela de usuários pode ser criada." },
+      { n: 2, data: "24–30 de setembro", titulo: "Conta e categorias", objetivo: "Concluir cadastro, entrada, saída, perfil e categorias.", entrega: "Usuário cria conta, entra, vê o perfil e sai." },
+      { n: 3, data: "1–7 de outubro", titulo: "Itens e primeira avaliação", objetivo: "Criar, listar, editar e excluir itens ligados ao dono.", entrega: "Demonstração parcial completa em 7 de outubro.", avaliacao: true },
+      { n: 4, data: "8–14 de outubro", titulo: "Correções e vitrine", objetivo: "Aplicar o retorno do docente e mostrar itens de outras pessoas.", entrega: "Vitrine funciona com e sem dados." },
+      { n: 5, data: "15–21 de outubro", titulo: "Filtros e clareza", objetivo: "Filtrar por categoria e esconder itens próprios ou trocados.", entrega: "A categoria escolhida altera a vitrine." },
+      { n: 6, data: "22–28 de outubro", titulo: "Gostei e não gostei", objetivo: "Salvar avaliações e impedir decisões repetidas.", entrega: "Decisão continua salva depois de reabrir o sistema." },
+      { n: 7, data: "29 de outubro–4 de novembro", titulo: "Combinações", objetivo: "Detectar interesse recíproco sem criar duplicatas.", entrega: "Duas contas veem a mesma combinação." },
+      { n: 8, data: "5–11 de novembro", titulo: "Mensagens", objetivo: "Criar conversa simples e protegida por participante.", entrega: "Participantes enviam e leem mensagens ao atualizar." },
+      { n: 9, data: "12–18 de novembro", titulo: "Fotos e proteção", objetivo: "Validar arquivos, propriedade, estados e acessos.", entrega: "Arquivo inválido é recusado e item trocado sai da vitrine." },
+      { n: 10, data: "19–25 de novembro", titulo: "Integração e testes", objetivo: "Corrigir erros, preparar dados e testar o caminho completo.", entrega: "Fluxo passa em dois computadores." },
+      { n: 11, data: "26–30 de novembro", titulo: "Ensaio e entrega", objetivo: "Congelar a versão, ensaiar e preparar cópia de segurança.", entrega: "Apresentação completa com plano alternativo.", avaliacao: true }
+    ];
+
+    const pessoas = [
+      {
+        id: "matheus", iniciais: "MP", nome: "Matheus Pereira", cargo: "Planejamento e regras de negócio",
+        trilha: ["Fluxos e regras", "Cartões e testes", "Apresentação"],
+        aprender: ["transformar ideia em fluxo", "escrever regras verificáveis", "dividir função em tarefas", "definir critérios de conclusão", "organizar evidências"],
+        praticar: ["desenhar cadastro", "escrever casos válidos e inválidos", "transformar combinação em condições", "ensaiar a apresentação"],
+        fontes: [["Guia interno: planejamento", "#guia-planejamento"], ["Guia interno: Git e GitHub", "#guia-git"]]
+      },
+      {
+        id: "joao", iniciais: "JV", nome: "João Victor", cargo: "Banco de dados e modelagem",
+        trilha: ["Tabelas e chaves", "Relações e modelos", "Consultas e dados de teste"],
+        aprender: ["tabela, coluna e tipo", "chave primária e estrangeira", "relação um-para-muitos", "unicidade", "modelos SQLAlchemy", "consultas SQLite"],
+        praticar: ["criar uma tabela simples", "desenhar usuário 1:N itens", "inserir dados de teste", "consultar itens de um usuário", "impedir e-mail duplicado"],
+        fontes: [["Guia interno: banco", "#guia-banco"], ["Curso de SQLite em português", "https://www.youtube.com/playlist?list=PLM3JKOX-K55-uZ2fB5CoOAzVr2-okDXMG"]]
+      },
+      {
+        id: "fernando", iniciais: "FN", nome: "Fernando Nunes", cargo: "Lógica do servidor e integração",
+        trilha: ["Python e Flask", "Formulários e banco", "Permissões e combinações"],
+        aprender: ["funções e condições em Python", "caminhos GET e POST", "formulários e validação", "sessão de entrada", "consultas SQLAlchemy", "autorização e depuração"],
+        praticar: ["criar rota de texto", "receber um formulário", "inserir e consultar usuário", "criar as quatro operações de itens", "negar edição de item alheio"],
+        fontes: [["Guia interno: Python", "#guia-python"], ["Guia interno: Flask", "#guia-flask"], ["Guia interno: banco", "#guia-banco"], ["Curso de Flask em português", "https://www.dio.me/courses/desenvolvimento-avancado-de-rest-api-com-flask"]]
+      },
+      {
+        id: "arthur", iniciais: "AC", nome: "Arthur Castilho", cargo: "Interface, HTML, CSS e JavaScript",
+        trilha: ["HTML e formulários", "CSS adaptável", "JavaScript e Jinja"],
+        aprender: ["HTML semântico", "formulários e rótulos", "Flexbox e Grid", "adaptação para celular", "eventos JavaScript", "laços e condições Jinja"],
+        praticar: ["criar formulário acessível", "montar cartão de item", "testar em 360 px", "listar itens com Jinja", "mostrar prévia de imagem"],
+        fontes: [["Guia interno: interface", "#guia-interface"], ["Guia interno: JavaScript e Jinja", "#guia-javascript"], ["HTML e CSS em português", "https://www.cursoemvideo.com/curso/html5-css3-modulo1/"]]
+      },
+      {
+        id: "pedro", iniciais: "PV", nome: "Pedro Vieira", cargo: "Armazenamento e segurança básica",
+        trilha: ["Senha e validação", "Acesso e arquivos", "Testes de segurança"],
+        aprender: ["senha e resumo seguro", "validação no servidor", "controle por proprietário", "envio seguro de imagem", "arquivos fora do Git", "testes negativos"],
+        praticar: ["conferir senha no banco", "abrir caminho sem entrar", "editar item alheio", "enviar extensão proibida", "testar campo vazio"],
+        fontes: [["Guia interno: segurança", "#guia-seguranca"], ["Autenticação Flask em português", "https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login-pt"]]
+      }
+    ];
+
+    const textoTrello = `[Banco + servidor] Criar usuários, cadastro e armazenamento seguro
+
+OBJETIVO
+Criar a entidade Users com ID, nome, e-mail único, resumo seguro da senha, latitude, longitude e foto de perfil. Integrar o modelo ao formulário e salvar no SQLite sem armazenar a senha pura.
+
+RESPONSÁVEIS
+João: modelo e banco
+Fernando: integração e caminhos
+Arthur: formulário
+Pedro: revisão de segurança
+Matheus: regras, testes e evidências
+
+LISTA DE VERIFICAÇÃO
+- Confirmar campos, tipos e obrigatoriedade
+- Configurar Flask-SQLAlchemy e SQLite
+- Criar a classe User
+- Definir e-mail único
+- Criar formulário de cadastro
+- Criar caminhos GET e POST
+- Validar campos e confirmação da senha
+- Recusar e-mail existente
+- Gerar resumo seguro da senha
+- Salvar e mostrar retorno claro
+- Executar testes manuais
+- Revisar em outro computador
+- Anexar evidências e registro de versão
+
+CONCLUÍDO QUANDO
+Cadastro válido funciona; e-mail repetido é recusado; entrada inválida não derruba o sistema; senha pura não aparece; dois integrantes conseguem executar.`;
+
+const estadoMapa = { chave: "geral", x: 0, y: 0, w: 1400, h: 1080, arrastando: false, px: 0, py: 0 };
+
+    function escaparMapa(texto) {
+      return String(texto).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+
+    function atualizarViewBox() {
+      document.getElementById("mapa-svg").setAttribute("viewBox", `${estadoMapa.x} ${estadoMapa.y} ${estadoMapa.w} ${estadoMapa.h}`);
+    }
+
+    function resetarMapa() {
+      Object.assign(estadoMapa, { x: 0, y: 0, w: 1400, h: 1080 });
+      atualizarViewBox();
+    }
+
+    function ampliarMapa(fator) {
+      const novoW = Math.max(420, Math.min(2100, estadoMapa.w * fator));
+      const novoH = novoW * 1080 / 1400;
+      estadoMapa.x += (estadoMapa.w - novoW) / 2;
+      estadoMapa.y += (estadoMapa.h - novoH) / 2;
+      estadoMapa.w = novoW;
+      estadoMapa.h = novoH;
+      atualizarViewBox();
+    }
+
+    function construirMapa(mapa) {
+      const cores = ["#5ee0a0", "#62b8ff", "#b9a2ff", "#ffd66b"];
+      const linhas = [];
+      const caixas = [];
+      const texto = (x, y, valor, tamanho, cor, peso = 500) =>
+        `<text x="${x}" y="${y}" fill="${cor}" font-size="${tamanho}" font-weight="${peso}">${escaparMapa(valor)}</text>`;
+      const curva = (x1,y1,x2,y2,cor) => {
+        const meio = (x1+x2)/2;
+        return `<path d="M ${x1} ${y1} C ${meio} ${y1}, ${meio} ${y2}, ${x2} ${y2}" fill="none" stroke="${cor}" stroke-width="3" opacity=".75"/>`;
+      };
+      let cabecalhos = texto(40,40,"TEMA",18,"#a8b7ca",700)
+        + texto(420,40,"RAMOS · LEIA DE CIMA PARA BAIXO",18,"#a8b7ca",700)
+        + texto(855,40,"DETALHES DO RAMO",18,"#a8b7ca",700);
+      caixas.push(`<rect x="35" y="495" width="320" height="115" rx="22" fill="#5ee0a0"/>`
+        + texto(58,539,mapa.raiz[0],27,"#062117",800)
+        + texto(58,574,mapa.raiz[1],18,"#174f3c"));
+      mapa.ramos.forEach((ramo,i) => {
+        const cor = cores[i];
+        const topo = 75 + i*245;
+        const centro = topo + 112;
+        linhas.push(curva(355,552,420,centro,cor));
+        caixas.push(`<rect x="407" y="${topo}" width="960" height="224" rx="20" fill="${cor}" fill-opacity=".035"/>`);
+        caixas.push(`<rect x="420" y="${centro-43}" width="345" height="86" rx="16" fill="#101f33" stroke="${cor}" stroke-width="2"/>`
+          + `<circle cx="449" cy="${centro}" r="17" fill="${cor}"/>`
+          + texto(443,centro+7,String(i+1),20,"#07111f",800)
+          + texto(478,centro+7,ramo[0],22,"#f4f8ff",700));
+        const filhos = ramo[1];
+        const altura = filhos.length*66 + (filhos.length-1)*9;
+        const inicio = centro - altura/2;
+        filhos.forEach((folha,j) => {
+          const y = inicio+j*75;
+          linhas.push(curva(765,centro,855,y+33,cor));
+          caixas.push(`<rect x="855" y="${y}" width="495" height="66" rx="12" fill="#101f33" stroke="${cor}" stroke-opacity=".38"/>`
+            + `<rect x="855" y="${y+13}" width="4" height="40" rx="2" fill="${cor}"/>`
+            + texto(874,y+27,folha[0],23,"#f4f8ff",650)
+            + texto(874,y+51,folha[1],20,"#a8b7ca"));
+        });
+      });
+      // Background bands first; links second; cards and text last.
+      const bandas = caixas.filter(c => c.includes('fill-opacity=".035"'));
+      const conteudo = caixas.filter(c => !c.includes('fill-opacity=".035"'));
+      return bandas.join("") + linhas.join("") + cabecalhos + conteudo.join("");
+    }
+
+    function renderMapa(chave) {
+      estadoMapa.chave = chave;
+      const mapa = mapasMentais[chave];
+      document.getElementById("mapa-conteudo").innerHTML = construirMapa(mapa);
+      document.getElementById("mapa-nome").textContent = mapa.nome + " · tema → ramos → detalhes";
+      document.getElementById("mapa-legenda-texto").textContent = mapa.nota;
+      document.getElementById("mapa-titulo").textContent = "Mapa mental: " + mapa.nome;
+      document.getElementById("mapa-descricao").textContent = mapa.raiz.join(". ") + ". " +
+        mapa.ramos.map((r,i) => (i+1) + ". " + r[0] + ": " + r[1].map(f=>f.join(" — ")).join("; ")).join(". ");
+      document.querySelectorAll(".mapa-aba").forEach(b => {
+        const ativa = b.dataset.mapa === chave;
+        b.classList.toggle("ativa", ativa);
+        b.setAttribute("aria-selected", String(ativa));
+        b.tabIndex = ativa ? 0 : -1;
+      });
+      resetarMapa();
+    }
+
+    function configurarMapas() {
+      const abas = document.getElementById("mapas-abas");
+      abas.innerHTML = Object.entries(mapasMentais).map(([id,mapa]) =>
+        `<button type="button" class="mapa-aba" role="tab" aria-controls="mapa-viewport" data-mapa="${id}">${mapa.nome}</button>`
+      ).join("");
+      abas.addEventListener("click", e => {
+        const botao = e.target.closest("[data-mapa]");
+        if (botao) renderMapa(botao.dataset.mapa);
+      });
+      abas.addEventListener("keydown", e => {
+        const botoes = [...abas.querySelectorAll("button")];
+        const atual = botoes.indexOf(document.activeElement);
+        if (atual < 0 || !["ArrowRight","ArrowLeft","Home","End"].includes(e.key)) return;
+        e.preventDefault();
+        const alvo = e.key === "Home" ? 0 : e.key === "End" ? botoes.length-1 :
+          (atual + (e.key === "ArrowRight" ? 1 : -1) + botoes.length) % botoes.length;
+        renderMapa(botoes[alvo].dataset.mapa);
+        botoes[alvo].focus();
+      });
+      document.getElementById("mapa-mais").addEventListener("click", () => ampliarMapa(.78));
+      document.getElementById("mapa-menos").addEventListener("click", () => ampliarMapa(1.28));
+      document.getElementById("mapa-resetar").addEventListener("click", resetarMapa);
+      const viewport = document.getElementById("mapa-viewport");
+      viewport.tabIndex = 0;
+      viewport.setAttribute("aria-label", "Mapa: arraste para mover; use as setas do teclado ou os botões de ampliação.");
+      viewport.addEventListener("keydown", e => {
+        const direcoes = { ArrowLeft: [-60,0], ArrowRight: [60,0], ArrowUp: [0,-60], ArrowDown: [0,60] };
+        if (!direcoes[e.key]) return;
+        e.preventDefault();
+        estadoMapa.x += direcoes[e.key][0];
+        estadoMapa.y += direcoes[e.key][1];
+        atualizarViewBox();
+      });
+      viewport.addEventListener("pointerdown", e => {
+        if (e.button !== 0) return;
+        estadoMapa.arrastando = true;
+        estadoMapa.px = e.clientX;
+        estadoMapa.py = e.clientY;
+        viewport.classList.add("arrastando");
+        viewport.setPointerCapture(e.pointerId);
+      });
+      viewport.addEventListener("pointermove", e => {
+        if (!estadoMapa.arrastando) return;
+        const svg = document.getElementById("mapa-svg");
+        const escala = Math.min(svg.clientWidth/estadoMapa.w, svg.clientHeight/estadoMapa.h);
+        estadoMapa.x -= (e.clientX-estadoMapa.px)/escala;
+        estadoMapa.y -= (e.clientY-estadoMapa.py)/escala;
+        estadoMapa.px = e.clientX;
+        estadoMapa.py = e.clientY;
+        atualizarViewBox();
+      });
+      const parar = e => {
+        estadoMapa.arrastando = false;
+        viewport.classList.remove("arrastando");
+        if (viewport.hasPointerCapture(e.pointerId)) viewport.releasePointerCapture(e.pointerId);
+      };
+      viewport.addEventListener("pointerup", parar);
+      viewport.addEventListener("pointercancel", parar);
+      renderMapa("geral");
+    }
+
+    function renderSemanas() {
+      const alvo = document.getElementById("linha-tempo");
+      alvo.innerHTML = semanas.map(s => `
+        <article class="semana ${s.avaliacao ? "avaliacao" : ""}">
+          <div class="semana-marcador">${s.n}</div>
+          <div class="semana-conteudo">
+            <div class="semana-topo"><h3>${s.titulo}</h3><span class="semana-data">${s.data}</span></div>
+            <p>${s.objetivo}</p>
+            <div class="semana-meta"><strong>Entrega visível:</strong> ${s.entrega}</div>
+          </div>
+        </article>`).join("");
+    }
+
+    function renderPessoas(filtro = "todos") {
+      const lista = document.getElementById("lista-pessoas");
+      const visiveis = filtro === "todos" ? pessoas : pessoas.filter(p => p.id === filtro);
+      lista.innerHTML = visiveis.map(p => `
+        <article class="pessoa" data-pessoa="${p.id}">
+          <div class="pessoa-identidade">
+            <div class="avatar">${p.iniciais}</div>
+            <h3>${p.nome}</h3>
+            <div class="pessoa-cargo">${p.cargo}</div>
+          </div>
+          <div class="pessoa-conteudo">
+            <div class="trilha-pessoa">${p.trilha.map((t, i) => `<div><strong>${i + 1}.</strong> ${t}</div>`).join("")}</div>
+            <div class="pessoa-blocos">
+              <div><h4>Precisa aprender</h4><ul>${p.aprender.map(x => `<li>${x}</li>`).join("")}</ul></div>
+              <div><h4>Precisa praticar</h4><ul>${p.praticar.map(x => `<li>${x}</li>`).join("")}</ul></div>
+            </div>
+            <div class="fontes">${p.fontes.map(f => {
+              const interno = f[1].startsWith("#");
+              return `<a href="${f[1]}" ${interno ? "" : 'target="_blank" rel="noopener noreferrer"'}>${f[0]} ${interno ? "→" : "↗"}</a>`;
+            }).join("")}</div>
+          </div>
+        </article>`).join("");
+    }
+
+    function montarFiltros() {
+      const alvo = document.getElementById("filtros-pessoas");
+      const opcoes = [{ id: "todos", nome: "Todos" }, ...pessoas.map(p => ({ id: p.id, nome: p.nome.split(" ")[0] }))];
+      alvo.innerHTML = opcoes.map((o, i) => `<button type="button" class="botao ${i === 0 ? "ativo" : ""}" data-filtro="${o.id}">${o.nome}</button>`).join("");
+      alvo.addEventListener("click", e => {
+        const botao = e.target.closest("[data-filtro]");
+        if (!botao) return;
+        alvo.querySelectorAll(".botao").forEach(b => b.classList.toggle("ativo", b === botao));
+        renderPessoas(botao.dataset.filtro);
+      });
+    }
+
+    function configurarProgresso() {
+      const caixas = [...document.querySelectorAll("[data-progresso]")];
+      caixas.forEach(caixa => {
+        caixa.checked = localStorage.getItem("troquei-" + caixa.dataset.progresso) === "1";
+        caixa.addEventListener("change", () => {
+          localStorage.setItem("troquei-" + caixa.dataset.progresso, caixa.checked ? "1" : "0");
+          atualizarProgresso();
+        });
+      });
+      atualizarProgresso();
+    }
+
+    function atualizarProgresso() {
+      const caixas = [...document.querySelectorAll("[data-progresso]")];
+      const feitas = caixas.filter(c => c.checked).length;
+      const valor = caixas.length ? Math.round(feitas / caixas.length * 100) : 0;
+      document.getElementById("barra-progresso").style.width = valor + "%";
+      document.getElementById("progresso-texto").textContent = valor + "%";
+      document.querySelector(".trilho").setAttribute("aria-valuenow", valor);
+    }
+
+    function normalizar(texto) {
+      return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    }
+
+    function configurarBusca() {
+      const campo = document.getElementById("busca");
+      const blocos = [...document.querySelectorAll(".bloco-pesquisa")];
+      campo.addEventListener("input", () => {
+        const termo = normalizar(campo.value.trim());
+        let encontrados = 0;
+        blocos.forEach(bloco => {
+          const conteudo = normalizar((bloco.dataset.termos || "") + " " + bloco.textContent);
+          const aparece = !termo || conteudo.includes(termo);
+          bloco.classList.toggle("oculto", !aparece);
+          if (aparece) encontrados++;
+        });
+        document.getElementById("sem-resultado").style.display = encontrados ? "none" : "block";
+      });
+    }
+
+    function configurarNavegacao() {
+      const links = [...document.querySelectorAll("aside nav a")];
+      const secoes = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+      const observador = new IntersectionObserver(entradas => {
+        entradas.forEach(entrada => {
+          if (!entrada.isIntersecting) return;
+          links.forEach(l => l.classList.toggle("ativo", l.getAttribute("href") === "#" + entrada.target.id));
+        });
+      }, { rootMargin: "-20% 0px -70% 0px" });
+      secoes.forEach(s => observador.observe(s));
+
+      document.getElementById("atalho-pessoa").addEventListener("change", e => {
+        if (!e.target.value) {
+          renderPessoas("todos");
+          return;
+        }
+        renderPessoas(e.target.value);
+        document.getElementById("equipe").scrollIntoView({ behavior: "smooth" });
+        document.querySelectorAll("[data-filtro]").forEach(b => b.classList.toggle("ativo", b.dataset.filtro === e.target.value));
+      });
+    }
+
+    function configurarCopia() {
+      const botao = document.getElementById("copiar-trello");
+      botao.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(textoTrello);
+        } catch {
+          const area = document.createElement("textarea");
+          area.value = textoTrello;
+          document.body.appendChild(area);
+          area.select();
+          document.execCommand("copy");
+          area.remove();
+        }
+        const anterior = botao.textContent;
+        botao.textContent = "Cartão copiado!";
+        setTimeout(() => botao.textContent = anterior, 1800);
+      });
+    }
+
+    configurarMapas();
+    renderSemanas();
+    montarFiltros();
+    renderPessoas();
+    configurarProgresso();
+    configurarBusca();
+    configurarNavegacao();
+    configurarCopia();
+  </script>
+</body>
+</html>
