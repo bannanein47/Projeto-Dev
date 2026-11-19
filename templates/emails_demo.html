@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block titulo %}E-mails de demonstração{% endblock %}
+{% block conteudo %}
+<section class="cartao">
+  <h1>Caixa de e-mails (demonstração)</h1>
+  <p class="fraco">Em produção estes e-mails seriam enviados por SMTP. No projeto local, ficam salvos aqui e também aparecem no terminal. Esta página só existe com <code>DEMO_MODE</code> ligado.</p>
+  {% for e in emails %}
+  <article class="email">
+    <p class="email-meta"><strong>Para:</strong> {{ e.para }} · {{ e.criado_em|data }}</p>
+    <h2>{{ e.assunto }}</h2>
+    <pre>{{ e.corpo }}</pre>
+    {% if e.link %}<a class="botao" href="{{ e.link }}">Abrir link de redefinição</a>{% endif %}
+  </article>
+  {% else %}
+  <p>Nenhum e-mail ainda. Peça uma redefinição em <a href="{{ url_for('esqueci_senha') }}">Esqueci a senha</a>.</p>
+  {% endfor %}
+</section>
+{% endblock %}

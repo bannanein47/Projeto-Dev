@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo, csrf with context %}
+{% block titulo %}Alterar senha{% endblock %}
+{% block conteudo %}
+<section class="cartao formulario">
+  <h1>Alterar senha</h1>
+  <form method="post" action="{{ url_for('alterar_senha') }}" novalidate data-protege>
+    {{ csrf() }}
+    {{ campo("senha_atual", "Senha atual", "password", erro=erros.senha_atual, autocomplete="current-password",
+             atributos={"maxlength": 128}) }}
+    {{ campo("senha", "Nova senha", "password", erro=erros.senha, autocomplete="new-password",
+             ajuda="Mínimo de 8 caracteres, com letra e número.",
+             atributos={"minlength": 8, "maxlength": 128, "data-forca": "1"}) }}
+    <div class="forca" id="forca" hidden>
+      <div class="forca-trilho"><div class="forca-barra" id="forca-barra"></div></div>
+      <span id="forca-texto" aria-live="polite"></span>
+    </div>
+    {{ campo("confirmar_senha", "Confirmar nova senha", "password", erro=erros.confirmar_senha,
+             autocomplete="new-password", atributos={"data-confirma": "senha", "maxlength": 128}) }}
+    <div class="acoes">
+      <button type="submit" class="botao">Alterar senha</button>
+      <a class="botao botao-sec" href="{{ url_for('perfil') }}">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

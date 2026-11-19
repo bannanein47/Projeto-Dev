@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block titulo %}Meu perfil{% endblock %}
+{% block conteudo %}
+<section class="cartao perfil">
+  <div class="perfil-topo">
+    {% if usuario.foto_perfil %}
+      <img class="avatar" src="{{ url_for('static', filename='uploads/' ~ usuario.foto_perfil) }}" alt="Foto de {{ usuario.nome }}" width="96" height="96">
+    {% else %}
+      <div class="avatar avatar-inicial" aria-hidden="true">{{ usuario.nome[0]|upper }}</div>
+    {% endif %}
+    <div>
+      <h1>{{ usuario.nome }}</h1>
+      <p class="fraco">{{ usuario.email }}</p>
+    </div>
+  </div>
+  <dl class="dados">
+    <div><dt>Localização</dt><dd>{{ usuario.localizacao or "Não informada" }}</dd></div>
+    <div><dt>Membro desde</dt><dd>{{ usuario.criado_em|data }}</dd></div>
+    <div><dt>Último acesso</dt><dd>{{ usuario.ultimo_login|data }}</dd></div>
+  </dl>
+  <div class="acoes">
+    <a class="botao" href="{{ url_for('editar_perfil') }}">Editar perfil</a>
+    <a class="botao botao-sec" href="{{ url_for('alterar_senha') }}">Alterar senha</a>
+  </div>
+</section>
+<section class="cartao">
+  <h2>Meus itens</h2>
+  {% if itens %}
+    <p class="fraco">Você tem {{ itens|length }} {{ 'item anunciado' if itens|length == 1 else 'itens anunciados' }}.</p>
+    <ul class="checklist">
+      {% for item in itens[:3] %}<li>{{ item.titulo }} <span class="fraco">· {{ item.categoria_nome }}</span></li>{% endfor %}
+    </ul>
+  {% else %}
+    <p class="fraco">Você ainda não anunciou nenhum item.</p>
+  {% endif %}
+  <div class="acoes">
+    <a class="botao" href="{{ url_for('novo_item') }}">+ Novo item</a>
+    <a class="botao botao-sec" href="{{ url_for('meus_itens') }}">Ver todos</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo, captcha, csrf with context %}
+{% block titulo %}Criar conta{% endblock %}
+{% block conteudo %}
+<div class="duo">
+
+  {# Lado roxo: só decoração e a ideia do site (por isso aria-hidden nas cartinhas) #}
+  <aside class="vitrine">
+    <p class="vitrine-titulo">Troque o que você não usa por algo que você quer.</p>
+    <p class="vitrine-texto">Anuncie, dê match e combine a troca.</p>
+    <div class="mini-troca" aria-hidden="true">
+      <div class="mini-carta mini-a"><span class="mini-foto"></span><b>Item teste 1</b><small>Seminovo</small></div>
+      <span class="mini-seta">⇄</span>
+      <div class="mini-carta mini-b"><span class="mini-foto"></span><b>Item teste 2</b><small>Usado</small></div>
+      <span class="mini-selo">É um match!</span>
+    </div>
+  </aside>
+
+  {# Lado branco: o formulário (mesmos campos e regras de antes) #}
+  <section class="cartao formulario">
+    <h1>Criar conta</h1>
+    <p class="lead">Leva menos de um minuto. Já tem conta? <a href="{{ url_for('login') }}">Entrar</a></p>
+    <form method="post" action="{{ url_for('cadastro') }}" novalidate data-protege>
+      {{ csrf() }}
+      {{ campo("nome", "Nome", valor=valores.nome, erro=erros.nome, autocomplete="name",
+               atributos={"minlength": 2, "maxlength": 100}) }}
+      {{ campo("email", "E-mail", "email", valores.email, erros.email, autocomplete="email",
+               atributos={"maxlength": 254}) }}
+      {{ campo("senha", "Senha", "password", erro=erros.senha, autocomplete="new-password",
+               atributos={"minlength": 8, "maxlength": 128, "data-forca": "1"}) }}
+      <div class="forca" id="forca" hidden>
+        <div class="forca-trilho"><div class="forca-barra" id="forca-barra"></div></div>
+        <span id="forca-texto" aria-live="polite"></span>
+      </div>
+      {# Requisitos da senha: o JS marca cada linha com ✓ enquanto a pessoa digita #}
+      <ul class="requisitos" id="requisitos" aria-label="Requisitos da senha">
+        <li data-req="tamanho">Pelo menos 8 caracteres</li>
+        <li data-req="letra">Uma letra</li>
+        <li data-req="numero">Um número</li>
+      </ul>
+      {{ campo("confirmar_senha", "Confirmar senha", "password", erro=erros.confirmar_senha,
+               autocomplete="new-password", atributos={"data-confirma": "senha", "maxlength": 128}) }}
+      {{ captcha(erros.captcha) }}
+      <button type="submit" class="botao botao-cheio">Criar conta</button>
+    </form>
+  </section>
+
+</div>
+{% endblock %}

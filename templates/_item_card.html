@@ -1,0 +1,24 @@
+{# Cartão de um item. Uso: {% set item = ... %}{% include "_item_card.html" %} #}
+<article class="item">
+  {% if item.foto %}
+    <img class="item-foto" src="{{ url_for('static', filename='uploads/' ~ item.foto) }}" alt="Foto de {{ item.titulo }}" loading="lazy">
+  {% else %}
+    <div class="item-foto item-sem-foto" aria-hidden="true">Sem foto</div>
+  {% endif %}
+  <div class="item-corpo">
+    <span class="etiqueta etiqueta-sm">{{ item.categoria_nome }}</span>
+    <h3>{{ item.titulo }}</h3>
+    <p class="fraco item-meta">{{ item.conservacao }} · {{ 'Disponível' if item.estado == 'disponivel' else 'Já trocado' }}</p>
+    {% if item.descricao %}<p class="item-desc">{{ item.descricao }}</p>{% endif %}
+    {% if gerenciar %}
+    <div class="acoes">
+      <a class="botao botao-sec botao-peq" href="{{ url_for('editar_item', item_id=item.id) }}">Editar</a>
+      <form method="post" action="{{ url_for('remover_item', item_id=item.id) }}" class="form-inline"
+            data-confirma-envio="Remover “{{ item.titulo }}”? Isso não pode ser desfeito.">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <button type="submit" class="botao botao-perigo botao-peq">Remover</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+</article>

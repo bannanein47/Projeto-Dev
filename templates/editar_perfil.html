@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo, csrf with context %}
+{% block titulo %}Editar perfil{% endblock %}
+{% block conteudo %}
+<section class="cartao formulario">
+  <h1>Editar perfil</h1>
+  <form method="post" action="{{ url_for('editar_perfil') }}" enctype="multipart/form-data" novalidate data-protege>
+    {{ csrf() }}
+    <div class="foto-bloco">
+      {% if usuario.foto_perfil %}
+        <img class="avatar" id="foto-previa" src="{{ url_for('static', filename='uploads/' ~ usuario.foto_perfil) }}" alt="Foto atual" width="96" height="96">
+      {% else %}
+        <div class="avatar avatar-inicial" id="foto-inicial" aria-hidden="true">{{ usuario.nome[0]|upper }}</div>
+        <img class="avatar" id="foto-previa" alt="Prévia da nova foto" width="96" height="96" hidden>
+      {% endif %}
+      <div class="campo {% if erros.foto %}tem-erro{% endif %}">
+        <label for="foto">Foto de perfil <span class="opcional">(opcional)</span></label>
+        <input id="foto" name="foto" type="file" accept="image/png,image/jpeg,image/webp" data-previa="foto-previa"
+               {% if erros.foto %}aria-invalid="true"{% endif %} aria-describedby="foto-ajuda{% if erros.foto %} foto-erro{% endif %}">
+        <p class="ajuda" id="foto-ajuda">PNG, JPG ou WEBP, até 2 MB.</p>
+        {% if erros.foto %}<p class="erro-campo" id="foto-erro" role="alert"><span aria-hidden="true">⚠</span> {{ erros.foto }}</p>{% endif %}
+        {% if usuario.foto_perfil %}
+        <label class="marcar"><input type="checkbox" name="remover_foto" value="1"> Remover foto atual</label>
+        {% endif %}
+      </div>
+    </div>
+    {{ campo("nome", "Nome", valor=valores.nome, erro=erros.nome, autocomplete="name",
+             atributos={"minlength": 2, "maxlength": 100}) }}
+    {{ campo("localizacao", "Localização (cidade/bairro)", valor=valores.localizacao, erro=erros.localizacao,
+             obrigatorio=False, atributos={"maxlength": 100}) }}
+    <div class="acoes">
+      <button type="submit" class="botao">Salvar</button>
+      <a class="botao botao-sec" href="{{ url_for('perfil') }}">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

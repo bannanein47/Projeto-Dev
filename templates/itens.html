@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block titulo %}Meus itens{% endblock %}
+{% block conteudo %}
+<section class="cabecalho-lista">
+  <div>
+    <h1>Meus itens</h1>
+    <p class="fraco">O que você quer trocar. Só você vê os botões de editar e remover.</p>
+  </div>
+  <a class="botao" href="{{ url_for('novo_item') }}">+ Novo item</a>
+</section>
+
+{% if itens %}
+<div class="grade-itens">
+  {% set gerenciar = true %}
+  {% for item in itens %}{% include "_item_card.html" %}{% endfor %}
+</div>
+{% else %}
+<section class="cartao centro">
+  <h2>Você ainda não anunciou nada</h2>
+  <p class="fraco">Publique o primeiro objeto que não usa mais.</p>
+  <a class="botao" href="{{ url_for('novo_item') }}">Publicar meu primeiro item</a>
+</section>
+{% endif %}
+{% endblock %}

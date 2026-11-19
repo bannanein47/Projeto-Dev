@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block titulo %}Descobrir{% endblock %}
+
+{# ---------------------------------------------------------------------------
+   RASCUNHO DA PÁGINA DE MATCH
+   As cartas abaixo são DADOS DE EXEMPLO (lista "perfis").
+   No próximo módulo, esta lista vira uma consulta ao banco de dados:
+   itens de OUTRAS pessoas, com estado "disponivel".
+   "retribuiu": True simula que o dono também curtiu um item seu (→ É um match!).
+   --------------------------------------------------------------------------- #}
+{% set perfis = [
+  {"id": 1, "titulo": "Item teste 1", "categoria": "Categoria teste", "conservacao": "Seminovo",
+   "dono": "Usuário teste", "local": "Cidade teste", "descricao": "Descrição de teste do item 1.",
+   "quer": ["Item A", "Item B"], "retribuiu": True},
+  {"id": 2, "titulo": "Item teste 2", "categoria": "Categoria teste", "conservacao": "Usado",
+   "dono": "Usuário teste", "local": "Cidade teste", "descricao": "Descrição de teste do item 2.",
+   "quer": ["Item C"], "retribuiu": False},
+  {"id": 3, "titulo": "Item teste 3", "categoria": "Categoria teste", "conservacao": "Com defeitos",
+   "dono": "Usuário teste", "local": "Cidade teste", "descricao": "Descrição de teste do item 3.",
+   "quer": ["Item D", "Item E"], "retribuiu": True}
+] %}
+
+{% block conteudo %}
+<div class="match">
+  <div class="match-topo">
+    <h1>Descobrir</h1>
+    <p class="match-contador" id="contador">{{ perfis|length }} itens para ver</p>
+  </div>
+  <p class="rascunho-aviso">Rascunho: as cartas são exemplos. Em breve, itens reais de outras pessoas.</p>
+
+  {# 1) Escolher qual item MEU eu ofereço (esses são itens reais do banco) #}
+  <div class="oferta campo">
+    <label for="oferta">Oferecer meu item:</label>
+    <select id="oferta">
+      <option value="">Escolha um item seu…</option>
+      <option value="teste">testeitem (exemplo)</option>
+      {% for i in meus_itens %}<option value="{{ i.id }}">{{ i.titulo }}</option>{% endfor %}
+    </select>
+    <p class="ajuda">Seus itens reais aparecem aqui. <a href="{{ url_for('novo_item') }}">Anunciar um item</a></p>
+  </div>
+
+  {# 2) A pilha de cartas #}
+  <div class="baralho" id="baralho">
+    <div class="baralho-vazio" id="vazio">
+      <h2>Você viu tudo por agora</h2>
+      <p>Volte mais tarde para ver itens novos.</p>
+      <button type="button" class="botao botao-sec" id="reiniciar">Ver de novo</button>
+    </div>
+
+    {% for p in perfis %}
+    <article class="carta" data-titulo="{{ p.titulo }}" data-dono="{{ p.dono }}"
+             data-retribuiu="{{ 'sim' if p.retribuiu else 'nao' }}">
+      <div class="carta-foto tom-{{ loop.index0 % 4 + 1 }}">
+        {# Quando houver foto real: <img src="..." alt="Foto de {{ p.titulo }}"> #}
+        <span aria-hidden="true">Foto do item</span>
+        <div class="carta-chips">
+          <span class="chip">{{ p.categoria }}</span>
+          <span class="chip {{ 'chip-defeito' if p.conservacao == 'Com defeitos' }}">{{ p.conservacao }}</span>
+        </div>
+        <span class="selo selo-troco" aria-hidden="true">TROCO!</span>
+        <span class="selo selo-passo" aria-hidden="true">PASSO</span>
+      </div>
+      <div class="carta-corpo">
+        <h2>{{ p.titulo }}</h2>
+        <p class="carta-dono">{{ p.dono }} · {{ p.local }}</p>
+        <p class="carta-desc">{{ p.descricao }}</p>
+        <p class="quer">Aceita em troca</p>
+        <ul class="quer-lista">{% for q in p.quer %}<li>{{ q }}</li>{% endfor %}</ul>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  {# 3) Botões (funcionam igual ao arrastar; servem para teclado e leitor de tela) #}
+  <div class="match-botoes">
+    <button type="button" class="btn-redondo" id="btn-passar" >Passar</button>
+    <button type="button" class="btn-redondo btn-curtir" id="btn-curtir" >Quero trocar</button>
+  </div>
+  <p class="match-status" id="status-match" role="status" aria-live="polite"></p>
+  <p class="match-dica">Arraste a carta para a direita (quero trocar) ou para a esquerda (passar), ou use as setas do teclado.</p>
+</div>
+
+{# Janela de "É um match!" (elemento <dialog> do HTML: já trata foco e tecla Esc) #}
+<dialog class="dialogo-match" id="dialogo-match" aria-labelledby="match-titulo">
+  <div class="match-faixa">
+    <h2 id="match-titulo">É um match!</h2>
+    <p>Você e <strong id="match-dono"></strong> querem trocar.</p>
+  </div>
+  <div class="match-corpo">
+    <div class="match-par">
+      <div class="match-item"><small>Seu item</small><span id="match-meu"></span></div>
+      <span class="match-seta" aria-hidden="true">⇄</span>
+      <div class="match-item"><small>Item dele(a)</small><span id="match-deles"></span></div>
+    </div>
+    <div class="acoes">
+      <button type="button" class="botao" id="match-fechar">Continuar descobrindo</button>
+      <button type="button" class="botao botao-sec" disabled>Combinar troca (em breve)</button>
+    </div>
+  </div>
+</dialog>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='js/match.js') }}"></script>{% endblock %}

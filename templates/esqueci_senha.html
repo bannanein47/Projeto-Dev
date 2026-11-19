@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo, captcha, csrf with context %}
+{% block titulo %}Esqueci a senha{% endblock %}
+{% block conteudo %}
+<section class="cartao formulario">
+  <h1>Esqueci a senha</h1>
+  <p class="lead">Digite o e-mail da sua conta e enviaremos um link para criar uma nova senha.</p>
+  {% if erros.geral %}
+  <div class="aviso aviso-erro" role="alert"><span>{{ erros.geral }}</span></div>
+  {% endif %}
+  <form method="post" action="{{ url_for('esqueci_senha') }}" novalidate data-protege>
+    {{ csrf() }}
+    {{ campo("email", "E-mail", "email", valores.email, erros.email, autocomplete="email") }}
+    {{ captcha(erros.captcha) }}
+    <button type="submit" class="botao botao-cheio">Enviar link</button>
+  </form>
+  <p class="centro"><a href="{{ url_for('login') }}">← Voltar para entrar</a></p>
+</section>
+{% endblock %}

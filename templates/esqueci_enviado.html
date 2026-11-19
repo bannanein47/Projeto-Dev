@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block titulo %}Link enviado{% endblock %}
+{% block conteudo %}
+<section class="cartao formulario centro">
+  <h1>Confira seu e-mail</h1>
+  <p class="lead">Se houver uma conta com esse e-mail, enviamos um link para redefinir a senha. Ele vale por 1 hora e só funciona uma vez.</p>
+  {% if demo_mode %}
+  <div class="aviso aviso-info"><span><strong>Modo demonstração:</strong> como este projeto roda no computador, o e-mail não sai de verdade. Abra a <a href="{{ url_for('emails_demo') }}">caixa de e-mails de demonstração</a> para ver o link.</span></div>
+  {% endif %}
+  <a class="botao botao-sec" href="{{ url_for('login') }}">Voltar para entrar</a>
+</section>
+{% endblock %}

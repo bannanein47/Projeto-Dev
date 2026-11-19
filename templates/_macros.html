@@ -1,0 +1,63 @@
+{% macro csrf() %}<input type="hidden" name="_csrf" value="{{ csrf_token() }}">{% endmacro %}
+
+{% macro campo(id, rotulo, tipo="text", valor="", erro="", ajuda="", autocomplete="", obrigatorio=True, atributos={}) %}
+<div class="campo{% if erro %} tem-erro{% endif %}">
+  <label for="{{ id }}">{{ rotulo }}{% if not obrigatorio %} <span class="opcional">(opcional)</span>{% endif %}</label>
+  <div class="entrada">
+    <input id="{{ id }}" name="{{ id }}" type="{{ tipo }}"
+           {% if tipo != "password" %}value="{{ valor or '' }}"{% endif %}
+           {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+           {% if obrigatorio %}required{% endif %}
+           {% if erro %}aria-invalid="true"{% endif %}
+           aria-describedby="{% if ajuda %}{{ id }}-ajuda {% endif %}{% if erro %}{{ id }}-erro{% endif %}"
+           {% for k, v in atributos.items() %}{{ k }}="{{ v }}" {% endfor %}>
+    {% if tipo == "password" %}
+    <button type="button" class="ver-senha" data-toggle-senha="{{ id }}" aria-label="Mostrar senha">Mostrar</button>
+    {% endif %}
+  </div>
+  {% if ajuda %}<p class="ajuda" id="{{ id }}-ajuda">{{ ajuda }}</p>{% endif %}
+  {% if erro %}<p class="erro-campo" id="{{ id }}-erro" role="alert">{{ erro }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro captcha(erro="") %}
+<div class="campo captcha{% if erro %} tem-erro{% endif %}">
+  <label for="captcha">Verificação de segurança</label>
+  <div class="captcha-linha">
+    <img id="captcha-img" src="{{ url_for('captcha_imagem', v=captcha_v) }}" width="190" height="64"
+         alt="Imagem com 5 letras e números. Digite o código no campo ao lado.">
+    <button type="button" class="botao botao-sec" data-captcha-refresh>Novo código</button>
+  </div>
+  <input id="captcha" name="captcha" type="text" required autocomplete="off" autocapitalize="characters"
+         spellcheck="false" maxlength="8" placeholder="Digite o código da imagem"
+         {% if erro %}aria-invalid="true"{% endif %} aria-describedby="captcha-ajuda{% if erro %} captcha-erro{% endif %}">
+  <p class="ajuda" id="captcha-ajuda">Não diferencia maiúsculas de minúsculas. Não leu? Peça um novo código.</p>
+  {% if erro %}<p class="erro-campo" id="captcha-erro" role="alert">{{ erro }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro area(id, rotulo, valor="", erro="", ajuda="", obrigatorio=True, maximo=1000) %}
+<div class="campo{% if erro %} tem-erro{% endif %}">
+  <label for="{{ id }}">{{ rotulo }}{% if not obrigatorio %} <span class="opcional">(opcional)</span>{% endif %}</label>
+  <textarea id="{{ id }}" name="{{ id }}" rows="4" maxlength="{{ maximo }}"
+            {% if obrigatorio %}required{% endif %}
+            {% if erro %}aria-invalid="true"{% endif %}
+            aria-describedby="{% if ajuda %}{{ id }}-ajuda {% endif %}{% if erro %}{{ id }}-erro{% endif %}">{{ valor or '' }}</textarea>
+  {% if ajuda %}<p class="ajuda" id="{{ id }}-ajuda">{{ ajuda }}</p>{% endif %}
+  {% if erro %}<p class="erro-campo" id="{{ id }}-erro" role="alert">{{ erro }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro selecao(id, rotulo, opcoes, escolhido="", erro="", vazio="Selecione…") %}
+{# opcoes: lista de (valor, texto) #}
+<div class="campo{% if erro %} tem-erro{% endif %}">
+  <label for="{{ id }}">{{ rotulo }}</label>
+  <select id="{{ id }}" name="{{ id }}" required {% if erro %}aria-invalid="true" aria-describedby="{{ id }}-erro"{% endif %}>
+    <option value="">{{ vazio }}</option>
+    {% for valor, texto in opcoes %}
+    <option value="{{ valor }}" {% if valor|string == escolhido|string %}selected{% endif %}>{{ texto }}</option>
+    {% endfor %}
+  </select>
+  {% if erro %}<p class="erro-campo" id="{{ id }}-erro" role="alert">{{ erro }}</p>{% endif %}
+</div>
+{% endmacro %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo, captcha, csrf with context %}
+{% block titulo %}Entrar{% endblock %}
+{% block conteudo %}
+<section class="cartao formulario">
+  <h1>Entrar</h1>
+  <p class="lead">Novo por aqui? <a href="{{ url_for('cadastro') }}">Criar conta</a></p>
+  {% if erros.geral %}
+  <div class="aviso aviso-erro" role="alert"><span>{{ erros.geral }}</span></div>
+  {% endif %}
+  <form method="post" action="{{ url_for('login') }}" novalidate data-protege>
+    {{ csrf() }}
+    {% if proximo %}<input type="hidden" name="next" value="{{ proximo }}">{% endif %}
+    {{ campo("email", "E-mail", "email", valores.email, autocomplete="email") }}
+    {{ campo("senha", "Senha", "password", autocomplete="current-password", atributos={"maxlength": 128}) }}
+    {{ captcha(erros.captcha) }}
+    <label class="marcar"><input type="checkbox" name="lembrar" value="1"> Manter conectado por 7 dias</label>
+    <button type="submit" class="botao botao-cheio">Entrar</button>
+  </form>
+  <p class="centro"><a href="{{ url_for('esqueci_senha') }}">Esqueci minha senha</a></p>
+</section>
+{% endblock %}

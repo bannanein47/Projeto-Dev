@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block titulo %}Link inválido{% endblock %}
+{% block conteudo %}
+<section class="cartao formulario centro">
+  <h1>Link inválido ou expirado</h1>
+  <p class="lead">Este link já foi usado ou passou de 1 hora. Peça um novo para continuar.</p>
+  <a class="botao" href="{{ url_for('esqueci_senha') }}">Pedir novo link</a>
+</section>
+{% endblock %}

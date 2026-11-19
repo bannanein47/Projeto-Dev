@@ -1,311 +1,82 @@
-# Troquei
+# Troquei — Módulos 1 e 2: Usuários, Categorias e Itens
 
-O **Troquei** é um projeto acadêmico do IFPE para criação de um site de troca de objetos entre pessoas. A proposta é permitir que cada usuário crie uma conta, cadastre itens que deseja trocar, veja itens de outras pessoas e demonstre interesse neles.
+**Módulo 1:** cadastro, entrada, saída, esqueci a senha, CAPTCHA e perfil.
+**Módulo 2:** 7 categorias prontas e gerenciamento de itens (anunciar, editar, retirar).
+Roda local com Flask + SQLite.
 
-Quando existe interesse recíproco entre **dois itens específicos**, o sistema cria uma combinação (*match*). A partir dela, os participantes podem conversar para acertar os detalhes da troca e, depois, marcá-la como concluída.
+## Como rodar (5 comandos)
 
-O objetivo desta versão não é lançar um produto público ou comercial. O foco é construir um fluxo menor, mas completo, que funcione localmente, possa ser testado pelo grupo e seja compreendido e explicado por todos durante as avaliações.
-
-## Marcos do projeto
-
-- **Primeira apresentação:** 7 de outubro de 2026.
-- **Objetivo da primeira apresentação:** cadastro, entrada, categorias e gerenciamento de itens funcionando localmente.
-- **Entrega final:** última semana de novembro de 2026.
-- **Objetivo final:** demonstrar o fluxo completo, com dados salvos, testes realizados e cada integrante capaz de explicar sua parte.
-
-## Fluxo principal do usuário
-
-1. **Criar conta** — nome, e-mail e senha.
-2. **Entrar** — a sessão identifica o usuário.
-3. **Cadastrar item** — foto, categoria e descrição.
-4. **Ver a vitrine** — visualizar itens disponíveis de outras pessoas.
-5. **Avaliar** — marcar “gostei” ou “não gostei”.
-6. **Combinar** — o sistema detecta interesse recíproco entre dois itens.
-7. **Conversar** — os participantes trocam mensagens dentro da combinação.
-8. **Concluir** — a troca é encerrada e os itens deixam de aparecer na vitrine.
-
-## Escopo desta versão
-
-### Entra no projeto
-
-- cadastro, entrada, saída e perfil;
-- categorias e gerenciamento de itens;
-- vitrine com filtros;
-- decisões de gostei e não gostei;
-- combinações por interesse recíproco;
-- mensagens simples entre os participantes de uma combinação;
-- proteção de senha;
-- validação de dados e controle básico de acesso;
-- upload/localização de imagens dentro da estrutura do projeto;
-- dados preparados para demonstração e testes.
-
-### Fica para uma versão futura
-
-- aplicativo móvel;
-- publicação do sistema na internet;
-- mapas e cálculo de distância real;
-- biometria ou verificação documental;
-- chat em tempo real e notificações;
-- pagamentos;
-- inteligência artificial integrada ao produto;
-- estrutura de segurança de nível empresarial.
-
-## Tecnologias
-
-| Ferramenta | Uso no projeto | Responsáveis principais |
-| --- | --- | --- |
-| Python 3 | Regras do sistema | Fernando e João |
-| Flask | Servidor local e rotas | Fernando |
-| HTML5 | Estrutura das páginas | Arthur |
-| CSS3 | Aparência e responsividade | Arthur |
-| JavaScript | Interações pequenas no navegador | Arthur |
-| Jinja | Inserção dos dados do Flask nas páginas | Fernando e Arthur |
-| SQLite | Banco de dados em arquivo local | João e Fernando |
-| Flask-SQLAlchemy | Modelos e consultas ao banco | João e Fernando |
-| Werkzeug | Proteção das senhas | Fernando e Pedro |
-| GitHub | Versionamento e compartilhamento do código | Todos |
-| Trello | Organização das tarefas e evidências | Todos |
-
-A aplicação será executada **localmente**. Nesta versão não é necessário contratar hospedagem, domínio ou serviços externos para o funcionamento principal.
-
-## Caminho de uma ação no sistema
-
-```text
-Navegador
-   ↓
-Flask
-   ↓
-Validação das regras
-   ↓
-SQLAlchemy
-   ↓
-SQLite
-   ↓
-Jinja
-   ↓
-Página devolvida ao navegador
+```bash
+python -m venv venv
+venv\Scripts\activate          # Windows   (Linux/Mac: source venv/bin/activate)
+pip install -r requirements.txt
+python seed.py                 # cria 3 contas e 6 itens de demonstração
+python app.py                  # abre em http://127.0.0.1:5000
 ```
 
-## Estrutura inicial do projeto
+Contas de demonstração (senha `Troquei@123`): `ana@troquei.com`, `bruno@troquei.com`, `carla@troquei.com`.
 
-```text
-Troquei/
-├── app.py
-├── models.py
-├── seed.py
-├── templates/
-├── static/
-│   ├── css/
-│   ├── js/
-│   └── uploads/
-└── instance/
-    └── troquei.db
+Testes automáticos (64): `python -m unittest discover -s tests -v`
+
+## O que o módulo faz
+
+| Tela | Rota | Regras |
+|---|---|---|
+| Cadastro | `/cadastro` | nome 2–100; e-mail válido e único (sem diferenciar maiúsculas); senha ≥ 8 com letra e número; confirmação; CAPTCHA |
+| Entrar | `/entrar` | CAPTCHA; mensagem genérica de erro; bloqueio 5 min após 5 erros; "manter conectado" 7 dias; `next` só para caminhos internos |
+| Sair | `/sair` (POST) | encerra a sessão |
+| Esqueci a senha | `/esqueci-senha` | CAPTCHA; resposta igual exista ou não o e-mail; limite de 5 pedidos / 15 min |
+| Nova senha | `/redefinir-senha/<token>` | link assinado, vale 1 h e **só 1 uso** (morre quando a senha muda) |
+| Perfil | `/perfil` | só logado |
+| Editar perfil | `/perfil/editar` | nome, localização, foto (PNG/JPG/WEBP até 2 MB, conferida pelo conteúdo, nome aleatório) |
+| Alterar senha | `/perfil/senha` | exige senha atual |
+| E-mails (demo) | `/emails-demo` | como não há servidor de e-mail, o link de redefinição aparece aqui e no terminal |
+
+**Segurança:** senha só como hash (Werkzeug/scrypt) · token CSRF em todo POST · cabeçalhos CSP/anti-iframe · SQL com parâmetros · HTML escapado pelo Jinja · sessão renovada no login · CAPTCHA de uso único gerado no servidor (SVG, sem serviço externo).
+
+## Módulo 2: Categorias e Itens
+
+| Tela | Rota | Regras |
+|---|---|---|
+| Meus itens | `/itens` | só logado; mostra apenas os itens do próprio usuário |
+| Novo item | `/itens/novo` | título 3–100; categoria da lista; conservação (Novo, Seminovo, Usado, Com defeitos); descrição até 1000 (opcional); foto PNG/JPG/WEBP até 2 MB (opcional) |
+| Editar item | `/itens/<id>/editar` | **só o dono** (outro usuário recebe 403); dá para trocar ou remover a foto |
+| Remover item | `/itens/<id>/remover` (POST) | só o dono; apaga o registro e o arquivo da foto; pede confirmação no navegador |
+
+**Banco:** tabelas `categories` (preenchida sozinha com 7 categorias ao iniciar) e `items` (liga `users` e `categories` por chave estrangeira; ao apagar um usuário, seus itens somem junto). Estado do item: `disponivel` ou `trocado` (o `trocado` será usado quando existirem combinações).
+
+**Decisão técnica:** continuamos com `sqlite3` puro (sem SQLAlchemy) para manter o projeto simples e já testado. As fotos de itens ficam em `static/uploads/items/`, com nome aleatório e conferência do conteúdo, reaproveitando o mesmo código das fotos de perfil.
+
+## Front-end e rascunho do Match
+
+Visual novo em **branco, cinza-azulado e roxo**, sem emojis (só HTML/CSS/JS, sem mexer nas regras do servidor) e a página `/match` (**Descobrir**): pilha de cartas para arrastar (Quero trocar / Passar) e janela “É um match!”. As cartas são **dados de exemplo** (rascunho); a ligação com o banco é o próximo módulo. Explicação completa e roteiro: **`GUIA_FRONTEND.md`**.
+
+## Estrutura
+
+```
+app.py        rotas, validações, CAPTCHA, token, limites   (Fernando + Pedro)
+models.py     tabelas users / emails_demo / categories / items (João)
+seed.py       contas de demonstração
+templates/    páginas Jinja                                (Arthur)
+static/       css/style.css, js/main.js, js/match.js, uploads/avatars e uploads/items
+tests/        testes automáticos                           (Matheus)
 ```
 
-- `app.py`: inicia o Flask e concentra o ponto de entrada da aplicação.
-- `models.py`: armazena os modelos do banco.
-- `templates/`: páginas renderizadas com Jinja.
-- `static/css/`: estilos da interface.
-- `static/js/`: interações no navegador.
-- `static/uploads/`: imagens enviadas para o projeto.
-- `instance/troquei.db`: banco SQLite local.
-- `seed.py`: prepara dados de demonstração.
+## Roteiro da apresentação (~6 min)
 
-## Banco de dados
+1. **Matheus** (30 s) — mostra o fluxo do guia: criar conta → entrar → perfil, e as regras.
+2. **Arthur** (1 min) — abre `/cadastro` no celular (F12 → 360 px): rótulos, medidor de força, "Mostrar senha".
+3. **Fernando** (1,5 min) — cadastra. Tenta e-mail repetido, senhas diferentes e CAPTCHA errado. Entra com a conta nova. Explica: navegador → rota → validação → banco → resposta.
+4. **João** (1 min) — abre `instance/troquei.db` (DB Browser) ou roda `sqlite3 instance/troquei.db "select id,nome,email,senha_hash from users"`: mostra o hash, nunca a senha.
+5. **Pedro** (1,5 min) — erra a senha 5× (bloqueio); "Esqueci a senha" → `/emails-demo` → abre o link → nova senha → tenta o link de novo (recusado) → mostra que `/perfil` sem login manda para o login.
+6. **Matheus + Arthur** (1 min) — entram como Ana, publicam um item com foto, editam o título, trocam a categoria e removem. Mostram `/itens` vazio e cheio.
+7. **Pedro** (30 s) — entra como Bruno e tenta abrir `/itens/1/editar` (item da Ana): recebe "Acesso negado".
+8. **Todos** (30 s) — `python -m unittest discover -s tests -v` mostra 64 testes OK.
 
-O modelo atual possui **seis entidades principais**.
+## Observações honestas (para dizer ao docente)
 
-| Entidade | Campos principais |
-| --- | --- |
-| `Users` | `id`, `nome`, `email`, `senha_hash`, localização opcional, `foto_perfil` |
-| `Categories` | `id`, `nome`, `icone` |
-| `Items` | `id`, `user_id`, `category_id`, título, descrição, foto, conservação, estado |
-| `Swipes` | `id`, `user_id`, `target_item_id`, ação, `criado_em` |
-| `Matches` | `id`, `item_a_id`, `item_b_id`, estado, `criado_em` |
-| `Messages` | `id`, `match_id`, `sender_id`, conteúdo, `criado_em`, lida |
-
-### Relações principais
-
-```text
-Usuário ── publica ──> Itens
-Categoria ── organiza ──> Itens
-Usuário ── realiza ──> Avaliações
-Itens ── formam ──> Combinação
-Combinação ── possui ──> Mensagens
-```
-
-## Primeiro cartão: `Users`
-
-O primeiro foco do desenvolvimento é a entidade de usuários, porque ela serve de base para login, propriedade dos itens, avaliações e mensagens.
-
-### Campos previstos
-
-| Campo | Regra |
-| --- | --- |
-| `id` | automático e único |
-| `nome` | entre 2 e 100 caracteres |
-| `email` | obrigatório e único |
-| `senha_hash` | nunca deve guardar a senha pura |
-| `latitude` / `longitude` | opcionais no protótipo |
-| `foto_perfil` | caminho da imagem ou imagem padrão |
-
-### Fluxo do cadastro
-
-```text
-Preencher → Validar → Consultar e-mail → Proteger senha → Salvar → Responder
-```
-
-### Critérios para considerar o cartão concluído
-
-- aplicação abre sem erro;
-- tabela de usuários existe;
-- cadastro válido cria uma conta;
-- e-mail repetido é recusado;
-- senha pura não aparece no banco;
-- pelo menos dois integrantes conseguem executar o projeto.
-
-### Testes manuais obrigatórios
-
-- cadastro válido;
-- e-mail repetido;
-- e-mail inválido;
-- nome vazio;
-- senhas diferentes;
-- senha abaixo do mínimo;
-- conferência do hash armazenado no banco;
-- atualização da página sem criação de duplicata.
-
-## Regra de combinação (*match*)
-
-A combinação acontece entre **dois itens específicos**, e não apenas entre duas pessoas.
-
-Exemplo:
-
-```text
-Ana gosta de um item de Bruno
-              +
-Bruno gosta de um item disponível de Ana
-              =
-        Combinação ativa
-```
-
-Antes de criar uma combinação, o sistema deve verificar se:
-
-- o item avaliado pertence a outra pessoa;
-- o usuário ainda não avaliou aquele item;
-- os dois itens continuam disponíveis;
-- existe interesse recíproco;
-- o mesmo par de itens ainda não possui uma combinação.
-
-Quando a troca é concluída:
-
-- a combinação recebe o estado `concluido`;
-- os dois itens recebem o estado `trocado`;
-- os itens deixam de aparecer na vitrine;
-- o histórico continua disponível aos participantes.
-
-## Organização da equipe
-
-| Integrante | Área principal |
-| --- | --- |
-| Matheus Pereira | Planejamento e regras de negócio |
-| João Victor | Banco de dados e modelagem |
-| Fernando Nunes | Back-end / servidor |
-| Arthur Castilho | Front-end / interface |
-| Pedro Vieira | Segurança básica e armazenamento |
-
-A divisão indica o foco principal de cada pessoa, mas o projeto deve continuar integrado. As partes não devem ser desenvolvidas como sistemas separados.
-
-## Cronograma
-
-As entregas são semanais. Ao final de cada semana deve existir algo pequeno, funcional e demonstrável.
-
-| Semana | Período | Foco | Entrega esperada |
-| ---: | --- | --- | --- |
-| 1 | 17–23 de setembro | Base e usuários | Flask abre e a tabela de usuários pode ser criada |
-| 2 | 24–30 de setembro | Conta e categorias | Usuário cria conta, entra, vê o perfil e sai |
-| 3 | 1–7 de outubro | Itens e primeira avaliação | Demonstração parcial completa em 7 de outubro |
-| 4 | 8–14 de outubro | Correções e vitrine | Vitrine funciona com e sem dados |
-| 5 | 15–21 de outubro | Filtros e clareza | Categoria escolhida altera a vitrine |
-| 6 | 22–28 de outubro | Gostei e não gostei | Decisão permanece salva após reabrir o sistema |
-| 7 | 29 de outubro–4 de novembro | Combinações | Duas contas enxergam a mesma combinação |
-| 8 | 5–11 de novembro | Mensagens | Participantes enviam e leem mensagens ao atualizar |
-| 9 | 12–18 de novembro | Fotos e proteção | Arquivo inválido é recusado e item trocado sai da vitrine |
-| 10 | 19–25 de novembro | Integração e testes | Fluxo completo funciona em dois computadores |
-| 11 | 26–30 de novembro | Ensaio e entrega | Apresentação completa com cópia e plano alternativo |
-
-## Método de trabalho
-
-O grupo deve aprender apenas o necessário para a tarefa atual e aplicar o conteúdo logo em seguida:
-
-```text
-Escolher → Compreender → Reproduzir → Aplicar → Testar e explicar
-```
-
-A proposta é evitar código que funcione sem que ninguém saiba explicar. Antes de aplicar algo diretamente no Troquei, a pessoa deve entender o conceito, reproduzir um exemplo menor e só então levar a solução ao projeto.
-
-## Organização no Trello
-
-Fluxo sugerido dos cartões:
-
-```text
-Ideias futuras
-    ↓
-Lista de tarefas
-    ↓
-Semana atual
-    ↓
-Em andamento
-    ↓
-Revisão e teste
-    ↓
-Concluído
-```
-
-### Regras de trabalho
-
-- **Regra dos 40 minutos:** se não houver progresso, registrar o que foi tentado, copiar o erro, reduzir o problema e pedir ajuda com contexto.
-- **Uma tarefa por vez:** cada pessoa mantém apenas um cartão principal em “Em andamento”.
-- **Integração frequente:** interface e servidor devem ser integrados pelo menos duas vezes por semana.
-
-### Um cartão só está concluído quando possui
-
-- código integrado;
-- teste executado;
-- captura de tela ou vídeo curto como evidência;
-- registro de versão identificável;
-- explicação de quem realizou a tarefa;
-- critérios de conclusão marcados.
-
-## Definição de pronto da entrega final
-
-### Conta e itens
-
-- [ ] Cadastro, entrada e saída funcionam.
-- [ ] Senha está protegida.
-- [ ] Dono consegue criar, editar e excluir seus itens.
-- [ ] Fotos válidas aparecem corretamente.
-
-### Troca
-
-- [ ] Vitrine e filtros funcionam.
-- [ ] Decisões de gostei/não gostei ficam salvas.
-- [ ] Interesse cruzado cria uma combinação.
-- [ ] Participantes conseguem trocar mensagens.
-
-### Apresentação
-
-- [ ] Projeto testado em dois computadores.
-- [ ] Contas e itens de teste preparados.
-- [ ] Cópia de segurança pronta.
-- [ ] Cada integrante consegue explicar sua parte.
-
-> O projeto está pronto quando o grupo consegue **executar, demonstrar, testar e explicar**. Muitas telas não substituem um fluxo menor que funciona de ponta a ponta.
-
-## Guia de estudo e planejamento
-
-O arquivo `GUIA_TROQUEI.html` concentra o plano visual do projeto, incluindo mapas mentais, cronograma, trilhas de estudo, guias em português, responsabilidades e critérios de entrega.
-
----
-
-Este README deve ser atualizado conforme o projeto avance e decisões do grupo forem alteradas.
+- E-mail é simulado (caixa de demonstração). Para e-mail real: defina `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`.
+- O CAPTCHA é próprio, para funcionar sem internet. Em produção se usaria reCAPTCHA/hCaptcha.
+- O limite de tentativas fica na memória (zera ao reiniciar o servidor).
+- O acesso ao banco usa `sqlite3` direto; migrar para Flask-SQLAlchemy mantém as mesmas regras (só `models.py` muda).
+- Ainda não existe vitrine: cada pessoa só vê os próprios itens. A vitrine, os likes e as combinações são o próximo módulo.

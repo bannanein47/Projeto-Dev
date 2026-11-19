@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+venv/
+.venv/
+instance/*
+!instance/.gitkeep
+static/uploads/avatars/*
+!static/uploads/avatars/.gitkeep
+static/uploads/items/*
+!static/uploads/items/.gitkeep

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#5b3fc4">
+  <title>{% block titulo %}Troquei{% endblock %} · Troquei</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topo">
+    <div class="topo-in">
+      <a class="marca" href="{{ url_for('index') }}"><span class="marca-sinal" aria-hidden="true">⇄</span> Troquei</a>
+      <nav aria-label="Principal" class="menu">
+        <a href="{{ url_for('index') }}">Início</a>
+        {% if usuario %}
+          <a href="{{ url_for('match') }}">Descobrir</a>
+          <a href="{{ url_for('meus_itens') }}">Meus itens</a>
+          <a href="{{ url_for('perfil') }}">Meu perfil</a>
+          <form method="post" action="{{ url_for('sair') }}" class="form-inline">
+            <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+            <button type="submit" class="link-botao">Sair</button>
+          </form>
+        {% else %}
+          <a href="{{ url_for('login') }}">Entrar</a>
+          <a href="{{ url_for('cadastro') }}" class="menu-destaque">Criar conta</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo" class="pagina">
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+      {% if mensagens %}
+      <div class="avisos">
+        {% for cat, msg in mensagens %}
+        <div class="aviso aviso-{{ cat }}" role="{{ 'alert' if cat == 'erro' else 'status' }}">
+          <span>{{ msg }}</span>
+          <button type="button" class="aviso-fechar" aria-label="Fechar aviso">×</button>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+    {% block conteudo %}{% endblock %}
+  </main>
+
+  <footer class="rodape">
+    <p>Troquei · projeto acadêmico IFPE · {{ ano }}
+      {% if demo_mode %} · <a href="{{ url_for('emails_demo') }}">Caixa de e-mails (demonstração)</a>{% endif %}</p>
+  </footer>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

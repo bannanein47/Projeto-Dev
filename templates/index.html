@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block titulo %}Início{% endblock %}
+{% block conteudo %}
+<section class="heroi">
+  <span class="etiqueta">Módulos 1 e 2 · Usuários e itens</span>
+  <h1>Troque o que você não usa por algo que você quer.</h1>
+  <p class="lead">Crie sua conta, anuncie o que você não usa mais e, nas próximas entregas, descubra itens de outras pessoas para trocar.</p>
+  <div class="acoes">
+    {% if usuario %}
+      <a class="botao" href="{{ url_for('match') }}">Descobrir trocas</a>
+      <a class="botao botao-sec" href="{{ url_for('meus_itens') }}">Meus itens</a>
+      <a class="botao botao-sec" href="{{ url_for('perfil') }}">Meu perfil</a>
+    {% else %}
+      <a class="botao" href="{{ url_for('cadastro') }}">Criar conta</a>
+      <a class="botao botao-sec" href="{{ url_for('login') }}">Já tenho conta</a>
+    {% endif %}
+  </div>
+</section>
+
+<section class="cartao" aria-labelledby="t-modulo">
+  <h2 id="t-modulo">O que o módulo de Usuários já faz</h2>
+  <ul class="checklist">
+    <li><a href="{{ url_for('cadastro') }}">Cadastro</a> com validação, e-mail único e senha protegida</li>
+    <li><a href="{{ url_for('login') }}">Entrada</a> com CAPTCHA, “lembrar-me” e bloqueio após 5 erros</li>
+    <li>Saída segura da conta</li>
+    <li><a href="{{ url_for('esqueci_senha') }}">Esqueci a senha</a> com link de uso único que expira em 1 hora</li>
+    <li>Perfil: editar nome, localização e foto; alterar a senha</li>
+    <li>Proteção contra CSRF, páginas privadas e redirecionamento seguro</li>
+  </ul>
+</section>
+
+<section class="cartao" aria-labelledby="t-itens">
+  <h2 id="t-itens">O que o módulo de Itens já faz</h2>
+  <ul class="checklist">
+    <li>7 categorias prontas (livros, roupas, eletrônicos…)</li>
+    <li>Anunciar um item com título, categoria, conservação, descrição e foto</li>
+    <li>Editar e remover — somente o dono do item pode fazer isso</li>
+    <li>Lista “Meus itens”, também resumida no perfil</li>
+  </ul>
+</section>
+{% endblock %}

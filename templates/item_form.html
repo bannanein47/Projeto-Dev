@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo, area, selecao, csrf with context %}
+{% block titulo %}{{ 'Editar item' if item else 'Novo item' }}{% endblock %}
+{% block conteudo %}
+<section class="cartao formulario">
+  <h1>{{ 'Editar item' if item else 'Novo item' }}</h1>
+  <form method="post" enctype="multipart/form-data" novalidate data-protege
+        action="{{ url_for('editar_item', item_id=item.id) if item else url_for('novo_item') }}">
+    {{ csrf() }}
+    {{ campo("titulo", "Título", valor=valores.titulo, erro=erros.titulo,
+             atributos={"minlength": 3, "maxlength": 100}) }}
+    {{ selecao("category_id", "Categoria", cat_opcoes, escolhido=valores.category_id, erro=erros.category_id) }}
+    {{ selecao("conservacao", "Estado de conservação", cons_opcoes, escolhido=valores.conservacao, erro=erros.conservacao) }}
+    {{ area("descricao", "Descrição", valor=valores.descricao, erro=erros.descricao, obrigatorio=False,
+            ajuda="Marca, tamanho, tempo de uso, o que você aceitaria em troca…") }}
+
+    <div class="foto-bloco">
+      <img class="item-previa" id="foto-previa" alt="Prévia da foto do item" width="120" height="120"
+           {% if item and item.foto %}src="{{ url_for('static', filename='uploads/' ~ item.foto) }}"{% else %}hidden{% endif %}>
+      <div class="campo {% if erros.foto %}tem-erro{% endif %}">
+        <label for="foto">Foto <span class="opcional">(opcional)</span></label>
+        <input id="foto" name="foto" type="file" accept="image/png,image/jpeg,image/webp" data-previa="foto-previa"
+               {% if erros.foto %}aria-invalid="true"{% endif %} aria-describedby="foto-ajuda{% if erros.foto %} foto-erro{% endif %}">
+        <p class="ajuda" id="foto-ajuda">PNG, JPG ou WEBP, até 2 MB.</p>
+        {% if erros.foto %}<p class="erro-campo" id="foto-erro" role="alert"><span aria-hidden="true">⚠</span> {{ erros.foto }}</p>{% endif %}
+        {% if item and item.foto %}
+        <label class="marcar"><input type="checkbox" name="remover_foto" value="1"> Remover foto atual</label>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="acoes">
+      <button type="submit" class="botao">{{ 'Salvar alterações' if item else 'Publicar item' }}</button>
+      <a class="botao botao-sec" href="{{ url_for('meus_itens') }}">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

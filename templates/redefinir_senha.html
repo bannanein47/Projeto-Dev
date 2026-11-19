@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo, csrf with context %}
+{% block titulo %}Nova senha{% endblock %}
+{% block conteudo %}
+<section class="cartao formulario">
+  <h1>Criar nova senha</h1>
+  <form method="post" action="{{ url_for('redefinir_senha', token=token) }}" novalidate data-protege>
+    {{ csrf() }}
+    {{ campo("senha", "Nova senha", "password", erro=erros.senha, autocomplete="new-password",
+             ajuda="Mínimo de 8 caracteres, com letra e número.",
+             atributos={"minlength": 8, "maxlength": 128, "data-forca": "1"}) }}
+    <div class="forca" id="forca" hidden>
+      <div class="forca-trilho"><div class="forca-barra" id="forca-barra"></div></div>
+      <span id="forca-texto" aria-live="polite"></span>
+    </div>
+    {{ campo("confirmar_senha", "Confirmar nova senha", "password", erro=erros.confirmar_senha,
+             autocomplete="new-password", atributos={"data-confirma": "senha", "maxlength": 128}) }}
+    <button type="submit" class="botao botao-cheio">Salvar nova senha</button>
+  </form>
+</section>
+{% endblock %}
